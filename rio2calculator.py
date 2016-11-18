@@ -21,22 +21,20 @@ print '-------------------------'
 Q=0
 
 
-Q=d.ask_nature_question(Q)
+Q=d.ask_nature_question(Q, inputanswer=1)
 print "Q is ",Q
 
-Q=d.ask_direction_question(Q)
+Q=d.ask_direction_question(Q, inputanswer="y")
 print "Q is ",Q
 
-Q = d.ask_content_question(Q)
+Q = d.ask_content_question(Q, inputanswer="n")
 print "Q is ", Q
 
-Q = d.ask_distance_question(Q)
+Q = d.ask_distance_question(Q, inputanswer=5)
 print "Q is ",Q
 
 
 print "final Q value is ",Q
-
-
 
 print '-------------------------'
 print 'Now assessing credibility of signal'
@@ -45,19 +43,19 @@ print '-------------------------'
 
 delta = 1
 
-delta = d.ask_source_question(delta)
+delta = d.ask_source_question(delta, inputanswer="y")
 print delta
 
-delta = d.ask_indep_question(delta)
+delta = d.ask_indep_question(delta, inputanswer="y")
 print delta
 
-delta = d.ask_natural_question(delta)
+delta = d.ask_natural_question(delta, inputanswer="n")
 print delta
 
-delta = d.ask_instrument_question(delta)
+delta = d.ask_instrument_question(delta, inputanswer="n")
 print delta
 
-delta = d.ask_hoax_question(delta)
+delta = d.ask_hoax_question(delta, inputanswer="n")
 print delta
     
     

@@ -1,41 +1,53 @@
 import sys
 # Definitions for the Q questions
 
-def ask_question(Q_old,question,options):
-    ''' Basic framework for asking and answering Q questions'''
+def ask_question(Q_old,question,options, answer=None):
+    ''' Basic framework for asking and answering multiple choice questions'''
     
-    increment = -1
+    increment = None
     
-    while increment <0:
+    while increment==None:
     
-        argument = input(question)
-        increment = options.get(argument, -1)
-        print increment
-        if increment<0:
+        if answer==None:
+            answer = input(question)
+        else:
+            print question
+            print answer
+        
+        increment = options.get(answer, -1)
+            
+        if increment==None:
+            answer=None
             print "Incorrect value entered, please try again"
  
     Q = Q_old+increment
    
     return Q
 
-def ask_yesno_question(Q_old,question,options):
-    ''' Basic framework for asking and answering Q questions'''
+def ask_yesno_question(Q_old,question,options,answer=None):
+    ''' Basic framework for asking and answering yes/no questions'''
     
-    increment = -1
+    increment = None
     
-    while increment <0:
+    while increment==None:
     
-        argument = raw_input(question)
-        increment = options.get(argument, -1)
-        print increment
-        if increment<0:
+        if answer==None:
+            answer = raw_input(question)
+        else:
+            print question
+            print answer
+            
+        increment = options.get(answer, None)
+        
+        if increment==None:
+            answer=None
             print "Incorrect value entered, please try again"
  
     Q = Q_old+increment
    
     return Q
 
-def ask_nature_question(Q_old):
+def ask_nature_question(Q_old, inputanswer=None):
     
     question = "What is the nature of the signal?"
     question = question+"\n(1) UFO\n(2) Artifact\n(3) Electromagnetic (light) transmission\n(4) Gravitational Wave \n(5) Physical Encounter\n"
@@ -48,9 +60,9 @@ def ask_nature_question(Q_old):
         5: 4, # Physical encounter
     }
     
-    return ask_question(Q_old,question,options)
+    return ask_question(Q_old,question,options,answer=inputanswer)
 
-def ask_direction_question(Q_old):
+def ask_direction_question(Q_old,inputanswer=None):
 
     question = "Is the signal specifically directed at Earth? (y/n)"
     
@@ -61,10 +73,10 @@ def ask_direction_question(Q_old):
         "N": 0, 
     }
       
-    return ask_yesno_question(Q_old,question,options)
+    return ask_yesno_question(Q_old,question,options,answer=inputanswer)
 
 
-def ask_content_question(Q_old):
+def ask_content_question(Q_old,inputanswer=None):
 
     question = "Does the signal contain any form of encoded message or data? (y/n)"
     
@@ -75,110 +87,134 @@ def ask_content_question(Q_old):
         "N": 0, 
     }
       
-    return ask_yesno_question(Q_old,question,options)
+    return ask_yesno_question(Q_old,question,options,answer=inputanswer)
        
-def ask_distance_question(Q_old):
+def ask_distance_question(Q_old,inputanswer=None):
 
     question = "What is the estimated distance to the signal?"
-    question = question+"\n(1)Within the Solar System \n(2) Within 50 light years \n(3) Within the Galaxy \n(4) Outside the Galaxy \n"
+    question = question+"\n(1) Within the Solar System \n(2) Within 50 light years \n(3) Within the Galaxy \n(4) Outside the Galaxy \n(5) Unknown \n"
 
     options = {
                 1:4, # Within the Solar System
                 2:3, # Within 50 light years
                 3:2, # Within the Galaxy
                 4:1, # Outside the Galaxy
+                5:0, # Unknown
     }
    
-    return ask_question(Q_old,question,options)
+    return ask_question(Q_old,question,options,answer=inputanswer)
        
 
 # Definitions for the delta questions
 
 def check_for_zero_delta(delta):
 
-    if(delta==0):
+    if(delta<=0):
         print "Credibility is zero"
         print "Final Rio Score is R = 0"
         sys.exit()
 
 
-def ask_source_question(delta):
+def ask_source_question(delta, inputanswer=None):
     
     question = "Is the discoverer and/or the tools used peer-reviewable - that is, are their methods and practices open to inspection and scrutiny (y/n)?"
-    answer = raw_input(question)
     
-    if answer=='y' or answer=='Y':
-        delta = delta+1
-    elif answer=='n' or answer=="N":
-        delta = 0
+    options = {
+        "y": 1,
+        "Y": 1, 
+        "n": -100, 
+        "N": -100, 
+    }
     
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)
+        
     check_for_zero_delta(delta)
     
     
     return delta
 
 
-def ask_indep_question(delta):
+def ask_indep_question(delta,inputanswer=None):
     
     question = "Has the signal been confirmed independently by another team (y/n)?"
-    answer = raw_input(question)
     
-    if answer=='y' or answer=='Y':
-        delta = delta+5
-    elif answer=='n' or answer=="N":
-        delta = 0
+    options = {
+        "y": 5,
+        "Y": 5, 
+        "n": -100, 
+        "N": -100, 
+    }
     
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
     check_for_zero_delta(delta)
     
-    
     return delta
-        
 
 
-def ask_natural_question(delta):
+def ask_natural_question(delta, inputanswer=None):
+    
     question = "Is there a plausible natural or anthropogenic explanation (y/n)?"
-    answer = raw_input(question)
+    options = {
+        "y": -100,
+        "Y": -100, 
+        "n": 3, 
+        "N": 3, 
+    }
     
-    if answer=='y' or answer=='Y':
-        delta = 0
-    elif answer=='n' or answer=="N":
-        delta = delta + 3
-    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
     check_for_zero_delta(delta)
-    
     
     return delta
 
 
-def ask_instrument_question(delta):
+def ask_instrument_question(delta, inputanswer=None):
     
     question = "Could the signal be caused by instrumental or data analysis effects (y/n)?"
-    answer = raw_input(question)
     
-    if answer=='y' or answer=='Y':
-        delta = delta -4
+    options = {
+        "y": -4,
+        "Y": -4, 
+        "n": 0, 
+        "N": 0, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    check_for_zero_delta(delta)
     
     return delta
 
-def ask_repeat_questiona(delta):
+def ask_repeat_questiona(delta,inputanswer=None):
     
     question = "Is the signal repeating (y/n)?"
-    answer = raw_input(question)
     
-    if answer=='y' or answer=='Y':
-        delta = delta +2
+    options = {
+        "y": 2,
+        "Y": 2, 
+        "n": 0, 
+        "N": 0, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    check_for_zero_delta(delta)
     
     return delta
 
-def ask_hoax_question(delta):
+def ask_hoax_question(delta,inputanswer=None):
     
     question = "Is it plausible it could be a hoax or faked (y/n)?"
-    answer = raw_input(question)
     
-    if answer=='y' or answer=='Y':
-        delta = delta -2
+    options = {
+        "y": -2,
+        "Y": -2, 
+        "n": 0, 
+        "N": 0, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    check_for_zero_delta(delta)
     
     return delta
+
 
 
 
