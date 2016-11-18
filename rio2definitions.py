@@ -99,11 +99,31 @@ def ask_distance_question(Q_old,inputanswer=None):
                 2:3, # Within 50 light years
                 3:2, # Within the Galaxy
                 4:1, # Outside the Galaxy
-                5:0, # Unknown
+                5:1, # Unknown
     }
    
     return ask_question(Q_old,question,options,answer=inputanswer)
-       
+    
+    
+def ask_all_Q_questions(natureanswer=None,directanswer=None,contentanswer=None,distanceanswer=None):
+    
+    
+    Q=0
+    
+    Q=ask_nature_question(Q, inputanswer=natureanswer)
+    print "Q is ",Q
+
+    Q=ask_direction_question(Q, inputanswer=directanswer)
+    print "Q is ",Q
+
+    Q=ask_content_question(Q, inputanswer=contentanswer)
+    print "Q is ", Q
+
+    Q=ask_distance_question(Q, inputanswer=distanceanswer)
+    print "Q is ",Q   
+
+    return Q
+
 
 # Definitions for the delta questions
 
@@ -112,7 +132,9 @@ def check_for_zero_delta(delta):
     if(delta<=0):
         print "Credibility is zero"
         print "Final Rio Score is R = 0"
-        sys.exit()
+        delta = 0
+        
+    return delta
 
 
 def ask_source_question(delta, inputanswer=None):
@@ -128,8 +150,7 @@ def ask_source_question(delta, inputanswer=None):
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)
         
-    check_for_zero_delta(delta)
-    
+    delta = check_for_zero_delta(delta)
     
     return delta
 
@@ -146,7 +167,7 @@ def ask_indep_question(delta,inputanswer=None):
     }
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
-    check_for_zero_delta(delta)
+    delta = check_for_zero_delta(delta)
     
     return delta
 
@@ -162,7 +183,7 @@ def ask_natural_question(delta, inputanswer=None):
     }
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
-    check_for_zero_delta(delta)
+    delta = check_for_zero_delta(delta)
     
     return delta
 
@@ -179,11 +200,11 @@ def ask_instrument_question(delta, inputanswer=None):
     }
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
-    check_for_zero_delta(delta)
+    delta = check_for_zero_delta(delta)
     
     return delta
 
-def ask_repeat_questiona(delta,inputanswer=None):
+def ask_repeat_question(delta,inputanswer=None):
     
     question = "Is the signal repeating (y/n)?"
     
@@ -195,7 +216,7 @@ def ask_repeat_questiona(delta,inputanswer=None):
     }
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
-    check_for_zero_delta(delta)
+    delta = check_for_zero_delta(delta)
     
     return delta
 
@@ -211,13 +232,41 @@ def ask_hoax_question(delta,inputanswer=None):
     }
     
     delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
-    check_for_zero_delta(delta)
+    delta = check_for_zero_delta(delta)
     
     return delta
 
 
+def ask_all_delta_questions(sourceanswer=None,indepanswer=None,naturalanswer=None,instrumentanswer=None,repeatanswer=None,hoaxanswer=None):
 
+    delta = 1
 
+    delta = ask_source_question(delta, inputanswer=sourceanswer)
+    
+    print "delta is ",delta
+    if delta==0: return delta
+    
 
+    delta = ask_indep_question(delta, inputanswer=indepanswer)
+    print "delta is ",delta
+    if delta==0: return delta
 
+    delta = ask_natural_question(delta, inputanswer=naturalanswer)
+    print "delta is ",delta
+    if delta==0: return delta
+    
+    delta = ask_instrument_question(delta, inputanswer=instrumentanswer)
+    print "delta is ",delta
+    if delta==0: return delta
+    
+    delta = ask_repeat_question(delta,inputanswer=repeatanswer)
+    print "delta is ", delta
+
+    delta = ask_hoax_question(delta, inputanswer=hoaxanswer)
+    print "delta is ",delta
+    
+    
+    delta = delta/10.0
+
+    return delta
 
