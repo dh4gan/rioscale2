@@ -160,8 +160,8 @@ def ask_indep_question(delta,inputanswer=None):
     question = "Has the signal been confirmed independently by another team (y/n)?"
     
     options = {
-        "y": 5,
-        "Y": 5, 
+        "y": 3,
+        "Y": 3, 
         "n": -100, 
         "N": -100, 
     }

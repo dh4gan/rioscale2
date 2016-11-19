@@ -5,6 +5,7 @@
 
 import rio2definitions as d
 import matplotlib.pyplot as plt
+import numpy as np
 
 title = '\t\t\t RIO SCALE 2.0 Distribution \n\t\t\t -------------------------'
 
@@ -60,6 +61,14 @@ for Q in Qvalues:
     for delta in deltavalues:
         Rio = Q*delta
         Riovalues.append(Rio)
+
+mean = np.mean(np.array(Riovalues))
+median = np.median(np.array(Riovalues))
+stdev = np.std(np.array(Riovalues))
+
+print "Mean: ",mean
+print "Median: ", median
+print "Stdev: ",stdev
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)

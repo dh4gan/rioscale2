@@ -27,12 +27,13 @@ for source in sourceanswers:
 
                         delta=d.ask_all_delta_questions(sourceanswer=source,indepanswer=indep,naturalanswer=nat,instrumentanswer=inst,repeatanswer=rep,hoaxanswer=hoax)
                         deltavalues.append(delta)
-                
+                        
+                       
 print deltavalues
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.hist(deltavalues, normed=True,bins=20)
+ax1.hist(deltavalues, normed=True, bins=20)
 ax1.set_xlabel("$\delta$", fontsize=22)
 ax1.set_ylabel("Relative Frequency",fontsize=22)
 plt.show()
