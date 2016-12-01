@@ -15,8 +15,10 @@ print '-------------------------'
 
 deltavalues = []
 
-sourceanswers = indepanswers = natureanswers = instrumentanswers = repeatanswers = hoaxanswers = ["y","n"]
 
+sourceanswers = indepanswers = repeatanswers = hoaxanswers = ["y","n"]
+natureanswers = instrumentanswers = [1,2,3,4]
+#sourceanswers =indepanswers =["y"]
 
 for source in sourceanswers:
     for indep in indepanswers:

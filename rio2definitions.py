@@ -173,16 +173,19 @@ def ask_indep_question(delta,inputanswer=None):
 
 
 def ask_natural_question(delta, inputanswer=None):
+        
+    question = "Is there a plausible natural or anthropogenic explanation?"
+    question = question+"\n(1) Definitely Yes \n(2) Maybe Yes \n(3) Maybe No \n(4) Definitely No"
+
     
-    question = "Is there a plausible natural or anthropogenic explanation (y/n)?"
     options = {
-        "y": -100,
-        "Y": -100, 
-        "n": 3, 
-        "N": 3, 
+                1:-100, # Definitely Yes
+                2:1, # Maybe Yes
+                3:2, # Maybe No
+                4:3, # Definitely No
     }
     
-    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = ask_question(delta,question,options,answer=inputanswer)      
     delta = check_for_zero_delta(delta)
     
     return delta
@@ -191,15 +194,16 @@ def ask_natural_question(delta, inputanswer=None):
 def ask_instrument_question(delta, inputanswer=None):
     
     question = "Could the signal be caused by instrumental or data analysis effects (y/n)?"
-    
+    question = question+"\n(1) Definitely Yes \n(2) Maybe Yes \n(3) Maybe No \n(4) Definitely No"
+
     options = {
-        "y": -4,
-        "Y": -4, 
-        "n": 0, 
-        "N": 0, 
+                1:-4, # Definitely Yes
+                2:-3, # Maybe Yes
+                3:-2, # Maybe No
+                4:0, # Definitely No
     }
     
-    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = ask_question(delta,question,options,answer=inputanswer)      
     delta = check_for_zero_delta(delta)
     
     return delta
@@ -265,8 +269,9 @@ def ask_all_delta_questions(sourceanswer=None,indepanswer=None,naturalanswer=Non
     delta = ask_hoax_question(delta, inputanswer=hoaxanswer)
     print "delta is ",delta
     
-    
-    delta = delta/10.0
+    delta = 0.8*pow(10,(delta-10)/2)
+    #delta = delta/10.0
 
+    print "POWER DELTA IS ", delta
     return delta
 
