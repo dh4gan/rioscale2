@@ -5,6 +5,7 @@
 
 import rio2definitions as d
 import matplotlib.pyplot as plt
+import numpy as np
 
 title = '\t\t\t RIO SCALE 2.0 delta Distribution \n\t\t\t -------------------------'
 
@@ -35,7 +36,10 @@ print deltavalues
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.hist(deltavalues, normed=True, bins=20)
+
+#ax1.hist(deltavalues, normed=False, bins=np.logspace(-9, 0.0, 25))
+ax1.hist(deltavalues, normed=False, bins=100)
+#ax1.set_xscale('log')
 ax1.set_xlabel("$\delta$", fontsize=22)
 ax1.set_ylabel("Relative Frequency",fontsize=22)
 plt.show()

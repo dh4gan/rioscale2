@@ -269,9 +269,8 @@ def ask_all_delta_questions(sourceanswer=None,indepanswer=None,naturalanswer=Non
     delta = ask_hoax_question(delta, inputanswer=hoaxanswer)
     print "delta is ",delta
     
-    delta = 0.8*pow(10,(delta-10)/2)
-    #delta = delta/10.0
+    #delta = 0.8*pow(10,(delta-10)/2)
+    delta = delta/10.0
 
-    print "POWER DELTA IS ", delta
     return delta
 
