@@ -54,7 +54,8 @@ for source in sourceanswers:
                                         delta=d.ask_all_delta_questions(content, sourceanswer=source,analyseanswer=analyse,indepanswer=indep,repeatanswer=rep,instrumentanswer=inst,naturalanswer=nat,hoaxanswer=hoax, expertanswer=expert,predictanswer=pred)
                                         deltavalues.append(delta)
                                         
-                                        
+                      
+print '-------------------------'                  
 print "Computing all possible Rio values"
 
 Riovalues = []
@@ -68,30 +69,36 @@ mean = np.mean(np.array(Qvalues))
 median = np.median(np.array(Qvalues))
 stdev = np.std(np.array(Qvalues))
 
+print '-------------------------'
 print "Q Statistics:"
+print "Maximum: ",np.amax(Qvalues)
+print "Minimum: ", np.amin(Qvalues)
 print "Mean: ",mean
 print "Median: ", median
 print "Stdev: ",stdev
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.hist(Qvalues, normed=False,bins=10)
+ax1.hist(Qvalues, range=[1,10],normed=False,bins=10)
 ax1.set_xlabel("$Q$", fontsize=22)
+ax1.set_xlim(0,11)
 ax1.set_ylabel("Absolute Frequency",fontsize=22)
 
 
 mean = np.mean(np.array(deltavalues))
 median = np.median(np.array(deltavalues))
 stdev = np.std(np.array(deltavalues))
-
+print '-------------------------'
 print "Delta Statistics:"
+print "Maximum: ",np.amax(deltavalues)
+print "Minimum: ", np.amin(deltavalues)
 print "Mean: ",mean
 print "Median: ", median
 print "Stdev: ",stdev
 
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
-ax2.hist(deltavalues, normed=False, log=True, bins=10)
+ax2.hist(deltavalues, range=[0,1], normed=False, log=True, bins=10)
 ax2.set_xlabel("$\delta$", fontsize=22)
 ax2.set_ylabel("Absolute Frequency",fontsize=22)
 
@@ -99,7 +106,7 @@ ax2.set_ylabel("Absolute Frequency",fontsize=22)
 mean = np.mean(np.array(Riovalues))
 median = np.median(np.array(Riovalues))
 stdev = np.std(np.array(Riovalues))
-
+print '-------------------------'
 print "R Statistics:"
 print "Mean: ",mean
 print "Median: ", median
@@ -107,7 +114,7 @@ print "Stdev: ",stdev
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.hist(Riovalues, normed=False,log=True,bins=10)
+ax1.hist(Riovalues, range=[0,10], normed=False,log=True,bins=10)
 ax1.set_xlabel("$R$", fontsize=22)
 ax1.set_ylabel("Absolute Frequency",fontsize=22)
 
