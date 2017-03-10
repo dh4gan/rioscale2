@@ -88,6 +88,7 @@ def ask_content_question(Q_old,inputanswer=None):
     }
       
     return ask_yesno_question(Q_old,question,options,answer=inputanswer)
+    
        
 def ask_distance_question(Q_old,inputanswer=None):
 
@@ -107,7 +108,7 @@ def ask_distance_question(Q_old,inputanswer=None):
     
 def ask_all_Q_questions(natureanswer=None,directanswer=None,contentanswer=None,distanceanswer=None):
     
-    
+    info_content=False
     Q=0
     
     Q=ask_nature_question(Q, inputanswer=natureanswer)
@@ -116,13 +117,17 @@ def ask_all_Q_questions(natureanswer=None,directanswer=None,contentanswer=None,d
     Q=ask_direction_question(Q, inputanswer=directanswer)
     print "Q is ",Q
 
+    Q_old = Q
     Q=ask_content_question(Q, inputanswer=contentanswer)
+    diff = Q-Q_old
+    if diff > 0.0: 
+        info_content=True
     print "Q is ", Q
 
     Q=ask_distance_question(Q, inputanswer=distanceanswer)
     print "Q is ",Q   
 
-    return Q
+    return Q, info_content
 
 
 # Definitions for the delta questions
@@ -154,14 +159,13 @@ def ask_source_question(delta, inputanswer=None):
     
     return delta
 
-
-def ask_indep_question(delta,inputanswer=None):
+def ask_reanalyse_question(delta,inputanswer=None):
     
-    question = "Has the signal been confirmed independently by another team (y/n)?"
+    question = "Has the signal been re-analysed by an independent team (y/n)?"
     
     options = {
-        "y": 3,
-        "Y": 3, 
+        "y": 1,
+        "Y": 1, 
         "n": -100, 
         "N": -100, 
     }
@@ -172,24 +176,38 @@ def ask_indep_question(delta,inputanswer=None):
     return delta
 
 
-def ask_natural_question(delta, inputanswer=None):
-        
-    question = "Is there a plausible natural or anthropogenic explanation?"
-    question = question+"\n(1) Definitely Yes \n(2) Maybe Yes \n(3) Maybe No \n(4) Definitely No"
-
+def ask_indep_question(delta,inputanswer=None):
+    
+    question = "Has the signal been confirmed independently by another telescope/instrument (y/n)?"
     
     options = {
-                1:-100, # Definitely Yes
-                2:1, # Maybe Yes
-                3:2, # Maybe No
-                4:3, # Definitely No
+        "y": 2,
+        "Y": 2, 
+        "n": -100, 
+        "N": -100, 
     }
     
-    delta = ask_question(delta,question,options,answer=inputanswer)      
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
     delta = check_for_zero_delta(delta)
     
     return delta
 
+
+def ask_repeat_question(delta,inputanswer=None):
+    
+    question = "Is the signal repeating (y/n)?"
+    
+    options = {
+        "y": 2,
+        "Y": 2, 
+        "n": 0, 
+        "N": 0, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = check_for_zero_delta(delta)
+    
+    return delta
 
 def ask_instrument_question(delta, inputanswer=None):
     
@@ -208,18 +226,19 @@ def ask_instrument_question(delta, inputanswer=None):
     
     return delta
 
-def ask_repeat_question(delta,inputanswer=None):
-    
-    question = "Is the signal repeating (y/n)?"
+def ask_natural_question(delta, inputanswer=None):
+        
+    question = "Is there a plausible natural or anthropogenic explanation?"
+    question = question+"\n(1) Definitely Yes \n(2) Maybe Yes \n(3) Maybe No \n(4) Definitely No"
     
     options = {
-        "y": 2,
-        "Y": 2, 
-        "n": 0, 
-        "N": 0, 
+                1:-100, # Definitely Yes
+                2:1, # Maybe Yes
+                3:2, # Maybe No
+                4:3, # Definitely No
     }
     
-    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = ask_question(delta,question,options,answer=inputanswer)      
     delta = check_for_zero_delta(delta)
     
     return delta
@@ -240,37 +259,72 @@ def ask_hoax_question(delta,inputanswer=None):
     
     return delta
 
+def ask_expert_question(delta,inputanswer=None):
+    
+    question = "Has a wide community of experts been consulted on the signal (y/n)?"
+    
+    options = {
+        "y": 0,
+        "Y": 0, 
+        "n": -2, 
+        "N": -2, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = check_for_zero_delta(delta)
+    
+    return delta
 
-def ask_all_delta_questions(sourceanswer=None,indepanswer=None,naturalanswer=None,instrumentanswer=None,repeatanswer=None,hoaxanswer=None):
+def ask_predict_question(delta,inputanswer=None):
+    
+    question = "Is the signal consistent with predictions for a signal from an extraterrestrial civilisation \nmade by scientists who did not make the observation?"
+    
+    options = {
+        "y": 2,
+        "Y": 2, 
+        "n": -2, 
+        "N": -2, 
+    }
+    
+    delta = ask_yesno_question(delta,question,options,answer=inputanswer)      
+    delta = check_for_zero_delta(delta)
+    
+    return delta
 
+
+def ask_all_delta_questions(info_content, sourceanswer=None,analyseanswer=None,indepanswer=None,repeatanswer=None,instrumentanswer=None,naturalanswer=None,hoaxanswer=None, expertanswer=None,predictanswer=None):
+
+    
     delta = 1
-
+    if info_content: delta = 2
+    
     delta = ask_source_question(delta, inputanswer=sourceanswer)
-    
-    print "delta is ",delta
     if delta==0: return delta
     
-
+    delta = ask_reanalyse_question(delta,inputanswer=analyseanswer)
+    if delta==0: return delta
+    
     delta = ask_indep_question(delta, inputanswer=indepanswer)
-    print "delta is ",delta
-    if delta==0: return delta
-
-    delta = ask_natural_question(delta, inputanswer=naturalanswer)
-    print "delta is ",delta
-    if delta==0: return delta
-    
-    delta = ask_instrument_question(delta, inputanswer=instrumentanswer)
-    print "delta is ",delta
     if delta==0: return delta
     
     delta = ask_repeat_question(delta,inputanswer=repeatanswer)
-    print "delta is ", delta
+
+    delta = ask_instrument_question(delta, inputanswer=instrumentanswer)
+    if delta==0: return delta
+
+    delta = ask_natural_question(delta, inputanswer=naturalanswer)
+    if delta==0: return delta
 
     delta = ask_hoax_question(delta, inputanswer=hoaxanswer)
-    print "delta is ",delta
+
+    
+    delta = ask_expert_question(delta,inputanswer=expertanswer)
+    if delta==0: return delta
+    
+    delta = ask_predict_question(delta, inputanswer=predictanswer)
     
     #delta = 0.8*pow(10,(delta-10)/2)
-    delta = delta/10.0
+    delta = delta/13.0
 
     return delta
 

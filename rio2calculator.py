@@ -20,7 +20,8 @@ print '-------------------------'
 
 Q=0
 
-Q = d.ask_all_Q_questions()
+info_content = False
+Q,info_content = d.ask_all_Q_questions()
 
 print "final Q value is ",Q
 
@@ -29,7 +30,7 @@ print 'Now assessing credibility of signal'
 print '-------------------------'
 
 
-delta = d.ask_all_delta_questions()
+delta = d.ask_all_delta_questions(info_content)
 
 Rio = Q*delta
 

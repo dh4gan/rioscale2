@@ -27,32 +27,34 @@ for nat in natureanswers:
         for content in contentanswers:
             for distance in distanceanswers:
 
-                Q=d.ask_all_Q_questions(natureanswer=nat,directanswer=direct,contentanswer=content,distanceanswer=distance)
+                Q,info_content=d.ask_all_Q_questions(natureanswer=nat,directanswer=direct,contentanswer=content,distanceanswer=distance)
 
                 Qvalues.append(Q)
-
 
 print 'Computing all possible values of delta'
 print '-------------------------'
 
 deltavalues = []
 
-sourceanswers = indepanswers = natureanswers = instrumentanswers = repeatanswers = hoaxanswers = ["y","n"]
-
+sourceanswers = indepanswers = repeatanswers = hoaxanswers = analyseanswers=expertanswers=predictanswers=["y","n"]
+info_content = [True,False]
+instrumentanswers = natureanswers = [1,2,3,4]
 
 for source in sourceanswers:
-    for indep in indepanswers:
-        for nat in natureanswers:
-            for inst in instrumentanswers:
-                for rep in repeatanswers:
-                    for hoax in hoaxanswers:
+    for analyse in analyseanswers:
+        for indep in indepanswers:
+            for rep in repeatanswers:
+                for inst in instrumentanswers:
+                    for nat in natureanswers:
+                        for hoax in hoaxanswers:
+                            for expert in expertanswers:
+                                for pred in predictanswers:
+                                    for content in info_content:
 
-                        delta=d.ask_all_delta_questions(sourceanswer=source,indepanswer=indep,naturalanswer=nat,instrumentanswer=inst,repeatanswer=rep,hoaxanswer=hoax)
-                        deltavalues.append(delta)
-                
-
-
-
+                                        delta=d.ask_all_delta_questions(content, sourceanswer=source,analyseanswer=analyse,indepanswer=indep,repeatanswer=rep,instrumentanswer=inst,naturalanswer=nat,hoaxanswer=hoax, expertanswer=expert,predictanswer=pred)
+                                        deltavalues.append(delta)
+                                        
+                                        
 print "Computing all possible Rio values"
 
 Riovalues = []
@@ -62,19 +64,54 @@ for Q in Qvalues:
         Rio = Q*delta
         Riovalues.append(Rio)
 
-mean = np.mean(np.array(Riovalues))
-median = np.median(np.array(Riovalues))
-stdev = np.std(np.array(Riovalues))
+mean = np.mean(np.array(Qvalues))
+median = np.median(np.array(Qvalues))
+stdev = np.std(np.array(Qvalues))
 
+print "Q Statistics:"
 print "Mean: ",mean
 print "Median: ", median
 print "Stdev: ",stdev
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-ax1.hist(Riovalues, normed=True,bins=20)
+ax1.hist(Qvalues, normed=False,bins=10)
+ax1.set_xlabel("$Q$", fontsize=22)
+ax1.set_ylabel("Absolute Frequency",fontsize=22)
+
+
+mean = np.mean(np.array(deltavalues))
+median = np.median(np.array(deltavalues))
+stdev = np.std(np.array(deltavalues))
+
+print "Delta Statistics:"
+print "Mean: ",mean
+print "Median: ", median
+print "Stdev: ",stdev
+
+fig2 = plt.figure()
+ax2 = fig2.add_subplot(111)
+ax2.hist(deltavalues, normed=False, log=True, bins=10)
+ax2.set_xlabel("$\delta$", fontsize=22)
+ax2.set_ylabel("Absolute Frequency",fontsize=22)
+
+
+mean = np.mean(np.array(Riovalues))
+median = np.median(np.array(Riovalues))
+stdev = np.std(np.array(Riovalues))
+
+print "R Statistics:"
+print "Mean: ",mean
+print "Median: ", median
+print "Stdev: ",stdev
+
+fig1 = plt.figure()
+ax1 = fig1.add_subplot(111)
+ax1.hist(Riovalues, normed=False,log=True,bins=10)
 ax1.set_xlabel("$R$", fontsize=22)
-ax1.set_ylabel("Relative Frequency",fontsize=22)
+ax1.set_ylabel("Absolute Frequency",fontsize=22)
+
 plt.show()
+
 
 
