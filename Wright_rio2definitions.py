@@ -33,9 +33,9 @@ def ask_yesno_question(Q_old,question,options,answer=None):
     
         if answer==None:
             answer = raw_input(question)
-        else:
-            print question
-            print answer
+        #else:
+            #print question
+            #print answer
             
         increment = options.get(answer, None)
         
@@ -325,8 +325,8 @@ def artificial_question(C,inputanswer=None):
     question = "Do only artificial explanations (that is, those requiring design and engineering) make sense?"
     
     options = {
-               "y":1,
-               "Y":1,
+               "y":2,
+               "Y":2,
                "n":0,
                "N":0,
                }
@@ -368,7 +368,8 @@ def J_question(J,inputanswer=None):
 
 def calculate_delta(J):
     
-    delta = pow(10,(J-10)/2.0)
+    delta = pow(10.0,0.5*(J-10))
+        
     
     return delta
 
@@ -383,17 +384,16 @@ def ask_all_delta_questions(hypothesisanswer=None, certainanswer=None,multanswer
     
     # Calculate A
     
-    A = ask_hypothesis_question(A,inputanswer=hypothesisanswer)
-    print "A is ", A
-    if(A>0):
     
-        A = ask_certainty_question(A, inputanswer=certainanswer)
-    else: 
+    A = ask_hypothesis_question(A,inputanswer=hypothesisanswer)
+    
+    if(A==0):
         Jzero=True
     
+    if(A>0):
+        A = ask_certainty_question(A, inputanswer=certainanswer)
     
-    if(Jzero==False):
-        if(A>0):
+        if(A>6):
             A = ask_multiple_question(A,inputanswer=multanswer)
         if(A>7):
             A = ask_multiplegroup_question(A,inputanswer=groupanswer)
@@ -420,13 +420,14 @@ def ask_all_delta_questions(hypothesisanswer=None, certainanswer=None,multanswer
         else:
             Jzero = True
             
-        if(C>2):
-            C = rare_question(C,inputanswer=rareanswer)
-            if(C>5):
-                C = community_question(C,inputanswer=communityanswer)
-                if(C>6):
-                    C = artificial_question(C,inputanswer=artificialanswer)
-                    if(C>7):
+        if(Jzero==False):
+            if(C>2):
+                C = rare_question(C,inputanswer=rareanswer)
+                if(C>5):
+                    C = community_question(C,inputanswer=communityanswer)
+                    if(C>6):
+                        C = artificial_question(C,inputanswer=artificialanswer)
+                        if(C>8):
                             C = message_question(C,inputanswer=messageanswer)
     
     # Calculate J
@@ -437,6 +438,8 @@ def ask_all_delta_questions(hypothesisanswer=None, certainanswer=None,multanswer
         J = calculate_J(A,B,C)
         J = J_question(J,inputanswer=Janswer)
     
+    if(J<0):
+        J=0
     delta = calculate_delta(J)
 
     return A,B,C,J,delta
