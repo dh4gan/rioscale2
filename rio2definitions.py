@@ -6,19 +6,19 @@
 # Definitions for the Q questions
 ######################################
 
-def ask_question(Q_old,question,options, answer=None):
+def ask_question(Q_old,question,options, answer=None,text=True):
     ''' Basic framework for asking and answering multiple choice questions'''
     
     increment = None
-    
-    print "------------------------------------------"
     while increment==None:
     
         if answer==None:
             answer = input(question)
         else:
-            print question
-            print answer
+            if(text):
+                print "------------------------------------------"
+                print question
+                print answer
         
         increment = options.get(answer, -1)
             
@@ -30,19 +30,21 @@ def ask_question(Q_old,question,options, answer=None):
    
     return Q
 
-def ask_yesno_question(Q_old,question,options,answer=None):
+def ask_yesno_question(Q_old,question,options,answer=None,text=True):
     ''' Basic framework for asking and answering yes/no questions'''
     
     increment = None
     
-    print "------------------------------------------"
+    
     while increment==None:
     
         if answer==None:
             answer = raw_input(question)
         else:
-            print question
-            print answer
+            if(text):
+                print "------------------------------------------"
+                print question
+                print answer
             
         increment = options.get(answer, None)
         
@@ -54,7 +56,7 @@ def ask_yesno_question(Q_old,question,options,answer=None):
    
     return Q
 
-def ask_nature_question(Q_old, inputanswer=None):
+def ask_nature_question(Q_old, inputanswer=None,text=True):
     
     question = "What is the nature of the signal? (select one of the 7 options) \n\n"
     
@@ -74,7 +76,7 @@ def ask_nature_question(Q_old, inputanswer=None):
     question = question+"------------------------\n"
     question = question+"Close Encounter \n"
     question = question+"------------------------\n"
-    question = question+"(7)Physical Encounter with alien(s)\n"
+    question = question+"(7) Physical Encounter with alien(s)\n"
       
     options = {
         1: 1, # Small probe / pieces of alien tech
@@ -83,15 +85,15 @@ def ask_nature_question(Q_old, inputanswer=None):
         4: 1, # EM transmission
         5: 2, # Neutrino transmission
         6: 3,  # GW transmission
-        7: 3, # Physical encounter
+        7: 4, # Physical encounter
     }
     
-    return ask_question(Q_old,question,options,answer=inputanswer)
+    return ask_question(Q_old,question,options,answer=inputanswer,text=text)
 
 
 
 
-def ask_content_question(Q_old,inputanswer=None):
+def ask_content_question(Q_old,inputanswer=None,text=True):
 
     question = "Does the signal contain clear evidence of an encoded message or data? (y/n)"
     
@@ -102,9 +104,9 @@ def ask_content_question(Q_old,inputanswer=None):
         "N": 0, 
     }
       
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer)
+    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
     
-def ask_direction_question(Q_old,inputanswer=None):
+def ask_direction_question(Q_old,inputanswer=None,text=True):
 
     question = "Has the origin of the signal been accurately located (either on the sky, or nearby)? (y/n)"
     
@@ -115,9 +117,9 @@ def ask_direction_question(Q_old,inputanswer=None):
         "N": 0, 
     }
       
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer)
+    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
        
-def ask_distance_question(Q_old, inputanswer=None):
+def ask_distance_question(Q_old, inputanswer=None,text=True):
     
     question = "Has the distance to the signal been accurately determined? (y/n)"
     
@@ -128,34 +130,36 @@ def ask_distance_question(Q_old, inputanswer=None):
         "N": 0, 
     }
       
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer)
+    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
            
 
-def ask_where_question(Q_old,inputanswer=None):
+def ask_where_question(Q_old,inputanswer=None,text=True):
 
     question = "What is the estimated distance to the signal?\n"
     question = question+"(1) Within the Solar System \n"
     question = question+"(2) Within the Galaxy \n"
-    question = question+"(3) Beyond the Galaxy/unknown\n"
+    question = question+"(3) Beyond the Galaxy \n"
+    question = question+"(4) Unknown\n"
     
     options = {
-                1:2, # Within the Solar System
-                2:1, # Within the Galaxy
-                3:0, # Outside the Galaxy/unknown
+                1:3, # Within the Solar System
+                2:2, # Within the Galaxy
+                3:1, # Outside the Galaxy
+                4:0, #unknown
     }
    
-    return ask_question(Q_old,question,options,answer=inputanswer)
+    return ask_question(Q_old,question,options,answer=inputanswer,text=text)
     
     
-def ask_all_Q_questions(natureanswer=None,directanswer=None,contentanswer=None,distanceanswer=None,whereanswer=None):
+def ask_all_Q_questions(text=True,natureanswer=None,directanswer=None,contentanswer=None,distanceanswer=None,whereanswer=None):
     
     Q=0
     
-    Q=ask_nature_question(Q, inputanswer=natureanswer)
-    Q=ask_content_question(Q, inputanswer=contentanswer)
-    Q=ask_direction_question(Q, inputanswer=directanswer)
-    Q=ask_distance_question(Q, inputanswer=distanceanswer)
-    Q=ask_where_question(Q, inputanswer=whereanswer)
+    Q=ask_nature_question(Q, inputanswer=natureanswer,text=text)
+    Q=ask_content_question(Q, inputanswer=contentanswer,text=text)
+    Q=ask_direction_question(Q, inputanswer=directanswer,text=text)
+    Q=ask_distance_question(Q, inputanswer=distanceanswer,text=text)
+    Q=ask_where_question(Q, inputanswer=whereanswer,text=text)
 
     return Q
 
@@ -170,7 +174,7 @@ def ask_all_Q_questions(natureanswer=None,directanswer=None,contentanswer=None,d
 # Questions for A
 ##################
 
-def ask_certainty_question(A, inputanswer=None):
+def ask_certainty_question(A, inputanswer=None,text=True):
 
     question = "Is there significant uncertainty about whether the phenomenon occurred or occurs at all?\n"
     question = question+"For instance, are the data corrupted, is there a significant risk of misunderstanding or transcription error? \n"
@@ -186,14 +190,14 @@ def ask_certainty_question(A, inputanswer=None):
     
     A_old = A
     
-    A = ask_yesno_question(A,question,options,answer=inputanswer)
+    A = ask_yesno_question(A,question,options,answer=inputanswer,text=text)
     
     if(A==A_old):
         uncertain=True
     
     return A, uncertain
 
-def ask_amenable_question(A, inputanswer=None):
+def ask_amenable_question(A, inputanswer=None,text=True):
 
     question = "How amenable to study is the phenomenon? Award between 0-3 points based upon the repeatability of the phenomena.\n"
     question = question + "(0) 0 pts: The phenomena has been observed exactly once\n"
@@ -204,15 +208,15 @@ def ask_amenable_question(A, inputanswer=None):
     question = question + "(3) 3 pts: The phenomenon is observed routinely by different groups using different equipment.\n"
     
     options = {
-               "0":0,
-               "1":1,
-               "2":2,
-               "3":3,
+               0:0,
+               1:1,
+               2:2,
+               3:3,
                }
      
-    return ask_yesno_question(A,question,options,answer=inputanswer)
+    return ask_question(A,question,options,answer=inputanswer,text=text)
      
-def ask_person_question(A,inputanswer=None):
+def ask_person_question(A,inputanswer=None,text=True):
     
     question = "Is the discoverer of the phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence?\n"
     question = question+"People are natural wishful thinkers, and often see what they want to see, \n"
@@ -220,25 +224,25 @@ def ask_person_question(A,inputanswer=None):
     question = question+ "(y) The claimants predicted the phenomenon they 'discovered'\n"
     question = question+ "(n) The claimants did not predict this phenomenon"
     options = {
-               "y":0,
-               "Y":0,
-               "n":7,
-               "N":7,
+               "y":-1,
+               "Y":-1,
+               "n":0,
+               "N":0,
             }
     
-    return ask_yesno_question(A,question,options,answer=inputanswer)
+    return ask_yesno_question(A,question,options,answer=inputanswer,text=text)
     
     
     
-def ask_A_questions(certainty=None, amenable=None,person=None):
+def ask_A_questions(text=True,certainty=None, amenable=None,person=None):
     
     A=6
     
-    A,uncertain = ask_certainty_question(A,inputanswer=certainty)
+    A,uncertain = ask_certainty_question(A,inputanswer=certainty,text=text)
     
     if(uncertain==False):
-        A=ask_amenable_question(A,inputanswer=amenable)
-        A=ask_person_question(A,inputanswer=person)
+        A=ask_amenable_question(A,inputanswer=amenable,text=text)
+        A=ask_person_question(A,inputanswer=person,text=text)
         
     return A
     
@@ -246,7 +250,7 @@ def ask_A_questions(certainty=None, amenable=None,person=None):
 # Questions for B
 ##################
 
-def ask_instrument_question(B, inputanswer=None):
+def ask_instrument_question(B, inputanswer=None,text=True):
     
     question="Does the phenomenon look like a known instrumental or psychological effect? \n"  
     question = question + "Examples: DC channel in a filterbank file, cosmic rays in spectra, \n"
@@ -262,7 +266,7 @@ def ask_instrument_question(B, inputanswer=None):
                }
     
     B_old = B
-    B = ask_yesno_question(B,question,options,answer=inputanswer)
+    B = ask_yesno_question(B,question,options,answer=inputanswer,text=text)
     
     if(B==B_old):
         instrumental = True
@@ -270,7 +274,7 @@ def ask_instrument_question(B, inputanswer=None):
     return B,instrumental
     
     
-def ask_builders_question(B, inputanswer=None):
+def ask_builders_question(B, inputanswer=None,text=True):
     
     question = "What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal\n"
     question = question+"is not instrumental?\n"
@@ -287,16 +291,16 @@ def ask_builders_question(B, inputanswer=None):
                3:3,
                }
     
-    return ask_question(B,question,options,answer=inputanswer)
+    return ask_question(B,question,options,answer=inputanswer,text=text)
 
 
-def ask_B_questions(instrument=None, builders=None):
+def ask_B_questions(instrument=None, builders=None,text=True):
     
     B = 0
-    B,instrumental = ask_instrument_question(B,inputanswer=instrument)
+    B,instrumental = ask_instrument_question(B,inputanswer=instrument,text=text)
     
     if(instrumental==False):
-        B = ask_builders_question(B,inputanswer=builders)
+        B = ask_builders_question(B,inputanswer=builders,text=text)
         
     return B
     
@@ -304,7 +308,7 @@ def ask_B_questions(instrument=None, builders=None):
 # Questions for C
 ###################
 
-def ask_hoax_question(C,inputanswer=None):
+def ask_hoax_question(C,inputanswer=None,text=True):
     question="Is there good reason to believe the phenomenon is consistent with a hoax?"
 
     hoax = False
@@ -316,15 +320,14 @@ def ask_hoax_question(C,inputanswer=None):
                }
     
     C_old = C
-    C = ask_yesno_question(C,question,options,answer=inputanswer)
+    C = ask_yesno_question(C,question,options,answer=inputanswer,text=text)
     
     if(C_old == C):
         hoax = True
-    
-    print C
+
     return C, hoax
 
-def ask_community_question(C,inputanswer=None):
+def ask_community_question(C,inputanswer=None,text=True):
     
     question = "How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal\n"
     question = question + "that could explain the phenomenon?\n"
@@ -336,32 +339,38 @@ def ask_community_question(C,inputanswer=None):
     question = question + "(8) 8 pts: *Only* extraterrestrial, artificial explanations make sense\n"
     question = question + "(9) 9 pts: The phenomenon contains information content of clearly intelligent design\n"
     
+    
+    
     options = {
                0:0,
                1:1,
+               2:2,
                3:3,
+               4:4,
+               5:5,
                6:6,
+               7:7,
                8:8,
                9:9,
+               10:10,
                }
     
-    C = ask_question(C,question,options,answer=inputanswer)
-    print C
+    C = ask_question(C,question,options,answer=inputanswer,text=text)
+
     return C
 
 
-def ask_C_questions(hoax=None, community=None):
+def ask_C_questions(hoax=None, community=None,text=True):
     
     C = 0
     Jzero=False
-    C,ishoax = ask_hoax_question(C,inputanswer=hoax)
+    C,ishoax = ask_hoax_question(C,inputanswer=hoax,text=text)
     
     if(ishoax):
         Jzero=True
     else:
-        C = ask_community_question(C,inputanswer=community)
+        C = ask_community_question(C,inputanswer=community,text=text)
         
-    print C,Jzero
     return C, Jzero
 
 def calculate_J(A,B,C):
@@ -377,14 +386,13 @@ def calculate_delta(J):
     return delta
 
 
-def ask_all_delta_questions(certaintyanswer=None, amenableanswer=None,personanswer=None, instrumentanswer=None,buildersanswer=None,hoaxanswer=None,communityanswer=None):
-    
+def ask_all_delta_questions(text=True,certaintyanswer=None, amenableanswer=None,personanswer=None, instrumentanswer=None,buildersanswer=None,hoaxanswer=None,communityanswer=None):
     
     # Calculate A, B, C
     
-    A = ask_A_questions(certainty=certaintyanswer,amenable=amenableanswer,person=personanswer)
-    B = ask_B_questions(instrument=instrumentanswer,builders=buildersanswer)
-    C,Jzero = ask_C_questions(hoax=hoaxanswer, community=communityanswer)
+    A = ask_A_questions(certainty=certaintyanswer,amenable=amenableanswer,person=personanswer, text=text)
+    B = ask_B_questions(instrument=instrumentanswer,builders=buildersanswer,text=text)
+    C,Jzero = ask_C_questions(hoax=hoaxanswer, community=communityanswer,text=text)
     
     # Calculate J
     

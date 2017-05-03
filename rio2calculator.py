@@ -7,7 +7,6 @@
 # Where Q describes the consequences of a signal if true, and delta describes the credibility of the signal
 
 import rio2definitions as d
-import sys
 
 title = '\t\t\t RIO SCALE 2.0 CALCULATOR \n\t\t\t -------------------------'
 
