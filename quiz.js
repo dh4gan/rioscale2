@@ -48,24 +48,45 @@ var A_questions = [{
                    qtype:"textbox"
                    },
                    {
-                   text:"Is the discoverer of phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence? <br>(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same).",
+                   text:"Is the discoverer of phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence? <br><br>(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same).",
                    choices:["yes, the claimants predicted this 'discovery'","no, the claimants have identified a new phenomenon, or one predicted by others"],
-                   values:[-1,0]
+                   values:[-1,0],
                    qtype:"multichoice",
-                   }
-                   
-                   
-                   ]
+                   }];
 var A_answers = [0,0,0];
 var A_total = 0.0;
 
 
-var B_questions = Q_questions
-var B_answers = Q_answers;
+var B_questions = [{
+                   text:"Does the phenomenon look like a known instrumental or psychological effect?",
+                   choices:["yes", "no"],
+                   values:[0,7],
+                   skipvalue:[0],
+                   qtype:"multichoice"
+                   },
+                   {
+                   text:"What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
+                   choices:[0,3],
+                   qtype:"textbox"
+                   }]
+
+var B_answers = [0,0];
 var B_total = 0.0;
 
 
-var C_questions = Q_questions
+var C_questions = [{
+                   text:"Is there good reason to think the phenomenon is a hoax?",
+                   choices:["yes","no"],
+                   values:[0,1],
+                   skipvalue:[0],
+                   qtype:"multichoice"
+                   },
+                   {
+                   text: "How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon?<br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
+                   choices:[0,9],
+                   qtype:"textbox"
+                   }]
+
 var C_answers = Q_answers;
 var C_total = 0.0;
 
@@ -235,7 +256,7 @@ function calculateTotal()
         
         document.getElementById("quizname").innerHTML = "Questions to determine &#948";
         document.getElementById("quizsub").innerHTML = "A) How real and amenable to study is the phenomenon?";
-        askAllQuestions();
+        askQuestionSet();
         
     }
     
@@ -247,7 +268,7 @@ function calculateTotal()
         
         document.getElementById("quizsub").innerHTML = "B) How certain are we that the phenomenon is not instrumental?";
         
-        askAllQuestions();
+        askQuestionSet();
         
     }
     
@@ -259,7 +280,7 @@ function calculateTotal()
     
     document.getElementById("quizsub").innerHTML = "C) How certain are we that the phenomenon is not natural or anthropogenic?";
     
-    askAllQuestions();
+    askQuestionSet();
     }
     
     else if(questionset=="C")
@@ -288,20 +309,26 @@ function finalAnswer()
     console.log("B="+B_total);
     console.log("C="+C_total);
     
-    var J = A_total + B_total +C_total - 20.0;
+    var J=0.0;
+    // J only non-zero if not a hoax (C>0)
+    if(C_total > 1.0e-10) J = A_total + B_total +C_total - 20.0;
+    
     var delta = Math.pow(10, (J-10.0)/2.0);
     
     Rio = Q_total*delta_total;
     
     document.getElementById("Qbox").innerHTML = "Q = "+Q_total;
-    document.getElementById("Abox").innerHTML = "A= "+A_total+", B = "+B_total, ", C = "+C_total;
+    document.getElementById("Abox").innerHTML = "A= "+A_total+", B = "+B_total+", C = "+C_total;
     document.getElementById("Jbox").innerHTML = "J = "+J;
-    document.getElementById("deltabox").innerHTML = "delta = "+delta_total;
+    document.getElementById("deltabox").innerHTML = "&#948 = "+delta_total;
     document.getElementById("Rbox").innerHTML = "Rio Score: R = "+Rio;
+    
+
+    document.getElementById("refreshbutton").style.visibility="visible";
     
 }
 
-function askAllQuestions()
+function askQuestionSet()
 {
     console.log("Asking all " +questionset+ " questions");
     
@@ -333,38 +360,17 @@ function askAllQuestions()
             return;
     }
     
-    /*if(questionset=="Q")
-    {
-        console.log("Asking Q Questions");
-    currentQuestions = Q_questions;
-    answers = Q_answers;
-    }
-    else if(questionset=="A")
-    {
-        currentQuestions= A_questions;
-        answers = A_answers;
-    }
-    
-    else if(questionset=="delta")
-    {
-        console.log("Asking delta questions");
-        currentQuestions=delta_questions;
-        answers = delta_answers;
-    
-    }
-    
-    else if(questionsets.indexOf(questionset)<0)
-    {
-        console.log("Error - question set not found");
-        return;
-    }*/
-    
     qID = 0;
     nQ = currentQuestions.length;
     askQuestion(currentQuestions);
 }
 
 
+function startQuiz()
+{
+    document.getElementById("refreshbutton").style.visibility="hidden";
+    questionset= "Q";
+    askQuestionSet();
+}
 
-questionset= "Q";
-askAllQuestions();
+startQuiz();

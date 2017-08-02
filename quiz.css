@@ -11,13 +11,14 @@ h1,h2,h3{
 
 p {
     color:gray;
+    margin-left:20px;
     font-family: helvetica, sans-serif;
 }
 
 div
 {
     color:black;
-    margin-left:30px;
+    margin-left:40px;
     font-family: helvetica, sans-serif;
 }
 
