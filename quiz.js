@@ -124,7 +124,18 @@ function getQuestionAnswer()
     
     else if(qtype=="textbox")
     {
-        answers[qID] = parseFloat(document.getElementsByName("box")[0].value);// Get value of textbox
+        
+        try
+        {
+        answers[qID] = Number(document.getElementsByName("box")[0].value);// Get value of textbox
+        if (isNaN(answers[qID])) throw "Not a valid number - try again";
+        }
+        catch(err)
+        {
+            document.getElementById("confirm").innerHTML = err;
+            return;
+        }
+        
     }
     
 
@@ -164,10 +175,10 @@ function calculateTotal()
     console.log("Total is ",total);
 }
 
-function askAllQQuestions()
+function askAllQuestions(questions)
 {
     qID = 0;
-    currentQuestions = Q_questions;
+    currentQuestions = questions;
     nQ = currentQuestions.length;
     askQuestion(currentQuestions);
     
@@ -176,4 +187,4 @@ function askAllQQuestions()
 
 
 
-askAllQQuestions();
+askAllQuestions(Q_questions);
