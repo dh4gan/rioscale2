@@ -28,7 +28,8 @@ var Q_questions = [{
                    },
                    {
                    text: "How large is it?",
-                   choices: [0,100],
+                   minimum: 0,
+                   maximum:100,
                    qtype:"textbox"
 		   }];
 
@@ -44,7 +45,8 @@ var A_questions = [{
                    qtype:"multichoice"},
                    {
                    text:"How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
-                   choices:[0,3],
+                   minimum:0,
+                   maximum:3,
                    qtype:"textbox"
                    },
                    {
@@ -66,7 +68,8 @@ var B_questions = [{
                    },
                    {
                    text:"What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
-                   choices:[0,3],
+                   minimum:0,
+                   maximum:3,
                    qtype:"textbox"
                    }]
 
@@ -127,9 +130,10 @@ function askTextBox(question){
     var choiceLabel = document.createElement('label')
     var textBox = document.createElement('input');
 
-    var boxString = 'box';
+    var boxString = "tbox";
     textBox.setAttribute('type', 'text');
     textBox.setAttribute('name', boxString);
+    textBox.setAttribute('id',boxString);
     textBox.setAttribute('value', 0);
 		
     document.getElementById("answersbox").appendChild(textBox);
@@ -164,7 +168,7 @@ function getQuestionAnswer()
     
     document.getElementById("confirm").innerHTML = "";
     currentQuestion = currentQuestions[qID];
-    nchoices = currentQuestion.choices.length;
+    
     
     console.log("getting question answer");
     
@@ -175,7 +179,7 @@ function getQuestionAnswer()
     // If question multichoice, then obtain which radio button was ticked
     if(qtype=="multichoice")
     {
-        
+        nchoices = currentQuestion.choices.length;
         var buttonList = document.getElementsByName("multichoice");
 	for (i=0; i < nchoices; i++)
 	{
@@ -187,18 +191,24 @@ function getQuestionAnswer()
 	answers[qID] = currentQuestion.values[choice];
     }
     
+    // Else if question textbox, obtain value from textbox and check it for veracity
     else if(qtype=="textbox")
     {
-        // Need to throw an out of bounds exception as well (TODO)
         try
         {
-        answers[qID] = Number(document.getElementsByName("box")[0].value);// Get value of textbox
+            answers[qID] = Number(document.getElementById("tbox").value);// Get value of textbox
+            
         if (isNaN(answers[qID])) throw "Not a valid number - try again";
+        if (answers[qID]<currentQuestion.minimum) throw "Number too low - try again"
+        if (answers[qID]>currentQuestion.maximum) throw "Number too high - try again"
         }
         catch(err)
         {
+            if(err!="TypeError")
+            {
             document.getElementById("confirm").innerHTML = err;
             return;
+            }
         }
         
     }
@@ -241,7 +251,6 @@ function calculateTotal()
     
     for (i=0; i<answers.length; i++)
     {
-        console.log(i,answers[i],answers.length);
         total = total+answers[i];
     }
     console.log("Total is ",total);
@@ -368,7 +377,7 @@ function askQuestionSet()
 
 function startQuiz()
 {
-    document.getElementById("refreshbutton").style.visibility="hidden";
+    //document.getElementById("refreshbutton").style.visibility="hidden";
     questionset= "Q";
     askQuestionSet();
 }
