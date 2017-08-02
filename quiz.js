@@ -7,7 +7,7 @@ var answers;
 var nQ;
 var qID;
 
-var questionsets = ["Q", "delta"]
+var questionsets = ["Q", "A", "B","C"]
 
 
 var Q_questions = [{
@@ -17,6 +17,7 @@ var Q_questions = [{
               "less than 100 light years",
               "further than 100 light years"],
     values: [4, 3, 2, 1],
+                   skipvalue: [4],
     qtype:"multichoice"},
                    
                    {
@@ -35,11 +36,28 @@ var Q_questions = [{
 var Q_answers = [0,0,0];
 var Q_total = 0.0;
 
-var delta_questions = [{
+var A_questions = Q_questions
+var A_answers = Q_answers;
+var A_total = 0.0;
+
+
+var B_questions = Q_questions
+var B_answers = Q_answers;
+var B_total = 0.0;
+
+
+var C_questions = Q_questions
+var C_answers = Q_answers;
+var C_total = 0.0;
+
+
+
+/*var delta_questions = [{
                        text:"This is a delta question",
                        choices: ["Yup", "Narp"],
                        values: [0,1],
                        qtype:"multichoice",
+                       skipvalue:[0],
                        },
                        {
                        text:"So's this ",
@@ -49,7 +67,7 @@ var delta_questions = [{
                        }];
 
 var delta_answers = [0,0];
-var delta_total = 0.0
+var delta_total = 0.0*/
 
 
 
@@ -125,10 +143,12 @@ function askQuestion()
 function getQuestionAnswer()
 {
     
+    document.getElementById("confirm").innerHTML = "";
     currentQuestion = currentQuestions[qID];
     nchoices = currentQuestion.choices.length;
     
     console.log("getting question answer");
+    
     qtype = currentQuestion.qtype;
     choice = -1;
     
@@ -166,9 +186,17 @@ function getQuestionAnswer()
 
     console.log("Answer is "+answers[qID]);
     
+    if(answers[qID]==currentQuestion.skipvalue)
+    {
+    
+        document.getElementById("confirm").innerHTML = "Previous answer resulted in skipping questions";
+        qID =nQ;
+    }
+    else
+    {
     // Update the question ID and ask the next question
     qID++;
-    
+    }
     if(qID <nQ)
     {
         askQuestion(currentQuestions);
@@ -178,7 +206,7 @@ function getQuestionAnswer()
     
     else
     {
-        console.log("We have asked all the questions");
+        console.log("We have asked all the questions in this section");
         calculateTotal();
         
     }
@@ -200,16 +228,41 @@ function calculateTotal()
     if(questionset=="Q")
     {
         console.log("Q questions answered");
-        questionset = "delta";
+        questionset = "A";
         Q_total = total;
         
         // Update header to show new question set
         
         document.getElementById("quizname").innerHTML = "Questions to determine &#948";
+        document.getElementById("quizsub").innerHTML = "A) How real and amenable to study is the phenomenon?";
         askAllQuestions();
         
     }
-    else if(questionset=="delta")
+    
+    else if(questionset=="A")
+    {
+        console.log("A questions answered");
+        questionset="B";
+        A_total = total;
+        
+        document.getElementById("quizsub").innerHTML = "B) How certain are we that the phenomenon is not instrumental?";
+        
+        askAllQuestions();
+        
+    }
+    
+    else if(questionset=="B")
+    {
+        console.log("B questions answered");
+    questionset="C";
+    B_total = total;
+    
+    document.getElementById("quizsub").innerHTML = "C) How certain are we that the phenomenon is not natural or anthropogenic?";
+    
+    askAllQuestions();
+    }
+    
+    else if(questionset=="C")
     {
         console.log("Quiz complete");
         delta_total = total;
@@ -223,9 +276,17 @@ function calculateTotal()
 function finalAnswer()
 {
     
+    console.log("A="+A_total);
+    console.log("B="+B_total);
+    console.log("C="+C_total);
+    
+    var J = A_total + B_total +C_total - 20.0;
+    var delta = Math.pow(10, (J-10.0)/2.0);
+    
     Rio = Q_total*delta_total;
     
     document.getElementById("Qbox").innerHTML = "Q="+Q_total;
+    document.getElementById("Jbox").innerHTML = "J="+J;
     document.getElementById("deltabox").innerHTML = "delta="+delta_total;
     document.getElementById("Rbox").innerHTML = "Rio Score: "+Rio;
     
