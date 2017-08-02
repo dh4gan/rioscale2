@@ -11,33 +11,52 @@ var questionsets = ["Q", "A", "B","C"]
 
 
 var Q_questions = [{
-    text:"What is the distance to the signal?",
-    choices: ["in the solar system",
-              "less than a light year",
-              "less than 100 light years",
-              "further than 100 light years"],
-    values: [4, 3, 2, 1],
+                   text:"What is the distance to the signal?",
+                   choices: ["in the solar system",
+                             "less than a light year",
+                             "less than 100 light years",
+                             "further than 100 light years"],
+                   values: [4, 3, 2, 1],
                    skipvalue: [4],
-    qtype:"multichoice"},
+                   qtype:"multichoice"},
                    
                    {
-		       text: "Have They seen us?",
-		       choices: ["yes", "no"],
-		       values: [2,1],
-		       qtype:"multichoice"
+                   text: "Have They seen us?",
+                   choices: ["yes", "no"],
+                   values: [2,1],
+                   qtype:"multichoice"
                    },
                    {
-		       text: "How large is it?",
-		       choices: [0,100],
-		       qtype:"textbox"
+                   text: "How large is it?",
+                   choices: [0,100],
+                   qtype:"textbox"
 		   }];
 
 
 var Q_answers = [0,0,0];
 var Q_total = 0.0;
 
-var A_questions = Q_questions
-var A_answers = Q_answers;
+var A_questions = [{
+                   text: "Is there significant uncertainty about whether the phenomenon occurred/occurs at all?",
+                   choices: ["yes","no"],
+                   values: [0,1],
+                   skipvalue:[0],
+                   qtype:"multichoice"},
+                   {
+                   text:"How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
+                   choices:[0,3],
+                   qtype:"textbox"
+                   },
+                   {
+                   text:"Is the discoverer of phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence? <br>(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same).",
+                   choices:["yes, the claimants predicted this 'discovery'","no, the claimants have identified a new phenomenon, or one predicted by others"],
+                   values:[-1,0]
+                   qtype:"multichoice",
+                   }
+                   
+                   
+                   ]
+var A_answers = [0,0,0];
 var A_total = 0.0;
 
 
@@ -49,27 +68,6 @@ var B_total = 0.0;
 var C_questions = Q_questions
 var C_answers = Q_answers;
 var C_total = 0.0;
-
-
-
-/*var delta_questions = [{
-                       text:"This is a delta question",
-                       choices: ["Yup", "Narp"],
-                       values: [0,1],
-                       qtype:"multichoice",
-                       skipvalue:[0],
-                       },
-                       {
-                       text:"So's this ",
-                       choices: ["y", "n"],
-                       values: [0,1],
-                       qtype:"multichoice",
-                       }];
-
-var delta_answers = [0,0];
-var delta_total = 0.0*/
-
-
 
 
 function clearBox(elementID)
@@ -111,7 +109,7 @@ function askTextBox(question){
     var boxString = 'box';
     textBox.setAttribute('type', 'text');
     textBox.setAttribute('name', boxString);
-    textBox.setAttribute('value', 71);
+    textBox.setAttribute('value', 0);
 		
     document.getElementById("answersbox").appendChild(textBox);
     }
@@ -170,7 +168,7 @@ function getQuestionAnswer()
     
     else if(qtype=="textbox")
     {
-        
+        // Need to throw an out of bounds exception as well (TODO)
         try
         {
         answers[qID] = Number(document.getElementsByName("box")[0].value);// Get value of textbox
@@ -305,14 +303,46 @@ function finalAnswer()
 
 function askAllQuestions()
 {
+    console.log("Asking all " +questionset+ " questions");
     
     
     
-    if(questionset=="Q")
+    switch(questionset){
+    
+    case "Q":
+            currentQuestions = Q_questions;
+            answers = Q_answers;
+            break;
+            
+    case "A":
+            currentQuestions = A_questions;
+            answers = A_answers;
+            break;
+            
+    case "B":
+            currentQuestions = B_questions;
+            answers = B_answers;
+            break;
+            
+    case "C":
+            currentQuestions = C_questions;
+            answers = C_answers;
+            break;
+        default:
+            document.getElementById("confirm").innerHTML = "Error: question set not found";
+            return;
+    }
+    
+    /*if(questionset=="Q")
     {
         console.log("Asking Q Questions");
     currentQuestions = Q_questions;
     answers = Q_answers;
+    }
+    else if(questionset=="A")
+    {
+        currentQuestions= A_questions;
+        answers = A_answers;
     }
     
     else if(questionset=="delta")
@@ -327,7 +357,7 @@ function askAllQuestions()
     {
         console.log("Error - question set not found");
         return;
-    }
+    }*/
     
     qID = 0;
     nQ = currentQuestions.length;
