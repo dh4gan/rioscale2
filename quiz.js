@@ -3,7 +3,7 @@
 
 var Q_questions = [{
     text:"What is the distance to the signal?",
-    answers: ["in the solar system",
+    choices: ["in the solar system",
               "less than a light year",
               "less than 100 light years",
               "further than 100 light years"],
@@ -12,17 +12,20 @@ var Q_questions = [{
                    
                    {
 		       text: "Have They seen us?",
-		       answers: ["yes", "no"],
+		       choices: ["yes", "no"],
 		       values: [2,1],
 		       qtype:"multichoice"
                    },
                    {
 		       text: "How large is it?",
-		       answers: [0,100],
+		       choices: [0,100],
 		       qtype:"textbox"
 		   }];
 
-                   
+var answers = [0,0,0];
+var nQ = Q_questions.length;
+var qID = 0;
+
 function clearBox(elementID)
     {
      document.getElementById(elementID).innerHTML = "";
@@ -30,8 +33,8 @@ function clearBox(elementID)
     
 function askMultiChoice(question){
     
-    // Create radio buttons for possible answers
-    for (i=0; i< question.answers.length; i++){
+    // Create radio buttons for possible choices
+    for (i=0; i< question.choices.length; i++){
 	
 	
 	var choiceLabel = document.createElement('label');
@@ -43,7 +46,7 @@ function askMultiChoice(question){
 	choiceRadioButton.setAttribute('name', choiceString);
 	
 	choiceLabel.appendChild(choiceRadioButton);
-	choiceLabel.appendChild(document.createTextNode(question.answers[i]));
+	choiceLabel.appendChild(document.createTextNode(question.choices[i]));
 	choiceLabel.appendChild(document.createElement('br'));
 	
 	document.getElementById("answersbox").appendChild(choiceLabel);
@@ -64,15 +67,16 @@ function askTextBox(question){
     textBox.setAttribute('name', boxString);
     textBox.setAttribute('value', 71);
 		
-    document.getElementById("answersbox").appendChild(textBox);    
+    document.getElementById("answersbox").appendChild(textBox);
     }
 
 
-function askQuestion(question)
+function askQuestion()
 {
 
+    question = Q_questions[qID];
     // Clear previous question
-    clearBox("answersbox")
+    clearBox("answersbox");
 
     // Set new question text
     document.getElementById("ask").innerHTML = question.text;
@@ -88,57 +92,66 @@ function askQuestion(question)
 	askTextBox(question);
     }
 
-
-
 }
 
-function getQuestionAnswer(currentQuestion)
+function getQuestionAnswer()
 {
     
+    currentQuestion = Q_questions[qID];
     console.log("getting question answer");
     qtype = currentQuestion.qtype;
-    document.getElementById("confirm").innerHTML = qtype;
     choice = -1;
+    
+    
     // If question multichoice, then obtain which radio button was ticked
-    if(currentQuestion.qtype=="multichoice")
+    if(qtype=="multichoice")
     {
-	for (i=0; i < currentQuestion.answers.length; i++)
+	for (i=0; i < currentQuestion.choices.length; i++)
 	{
-
+        console.log(qID, i,currentQuestion.choices.length);
 	    var ischecked = document.getElementsByName("choice"+String(i+1))[0].checked;	
 	    console.log(ischecked)
 	    if(ischecked) choice = i;
 	}
 
-	answer = currentQuestion.values[choice];
+        
+	answers[qID] = currentQuestion.values[choice];
     }
+    
+    else if(qtype=="textbox")
+    {
+        answers[qID] = document.getElementsByName("box")[0].value;// Get value of textbox
+    }
+    
 
 
-    console.log(answer)
-    answered=true;
-return answer;
+    console.log("Answer is "+answers[qID]);
+    
+    // Update the question ID and ask the next question... TODO
+    qID++;
+    
+    if(qID <nQ)
+    {
+        askQuestion();
+        
+    // Unless we have run out of questions...
+    }
+    
+    else
+    {
+        
+        
+    }
+ 
 }
 
 function askAllQQuestions()
 {
-    var qID = 0;
-    var qnumber = Q_questions.length;
+    qID = 0;
+    askQuestion();
 
-    currentQuestion = Q_questions[qID];
-    askQuestion(currentQuestion);
-
-    // Function that waits for user press
-
-    // Function that gets answer
-
-    answer = getQuestionAnswer(currentQuestion);
     
-    answered=false;
-     
 }
 
-
-click = false;
-currentQuestion = Q_questions[0];
 
 askAllQQuestions();
