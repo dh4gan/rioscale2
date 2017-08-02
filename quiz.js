@@ -1,6 +1,15 @@
 // For now, these are placeholders for the three question types
 // (multiple choice, y/n, textbox)
 
+var questionset;
+var currentQuestions;
+var answers;
+var nQ;
+var qID;
+
+var questionsets = ["Q", "delta"]
+
+
 var Q_questions = [{
     text:"What is the distance to the signal?",
     choices: ["in the solar system",
@@ -22,11 +31,27 @@ var Q_questions = [{
 		       qtype:"textbox"
 		   }];
 
-var answers = [0,0,0];
-var nQ;
-var qID = 0;
 
-var currentQuestions;
+var Q_answers = [0,0,0];
+var Q_total = 0.0;
+
+var delta_questions = [{
+                       text:"This is a delta question",
+                       choices: ["Yup", "Narp"],
+                       values: [0,1],
+                       qtype:"multichoice",
+                       },
+                       {
+                       text:"So's this ",
+                       choices: ["y", "n"],
+                       values: [0,1],
+                       qtype:"multichoice",
+                       }];
+
+var delta_answers = [0,0];
+var delta_total = 0.0
+
+
 
 
 function clearBox(elementID)
@@ -113,9 +138,8 @@ function getQuestionAnswer()
     {
 	for (i=0; i < nchoices; i++)
 	{
-        console.log(qID, i,currentQuestion.choices.length);
-	    var ischecked = document.getElementsByName("choice"+String(i+1))[0].checked;	
-	    console.log(ischecked)
+        
+	    var ischecked = document.getElementsByName("choice"+String(i+1))[0].checked;
 	    if(ischecked) choice = i;
 	}
 
@@ -168,23 +192,77 @@ function calculateTotal()
     
     for (i=0; i<answers.length; i++)
     {
-        console.log(i, total,answers[i]);
+        console.log(i,answers[i],answers.length);
         total = total+answers[i];
-        
     }
     console.log("Total is ",total);
-}
-
-function askAllQuestions(questions)
-{
-    qID = 0;
-    currentQuestions = questions;
-    nQ = currentQuestions.length;
-    askQuestion(currentQuestions);
+    
+    if(questionset=="Q")
+    {
+        console.log("Q questions answered");
+        questionset = "delta";
+        Q_total = total;
+        
+        // Update header to show new question set
+        
+        document.getElementById("quizname").innerHTML = "Questions to determine &#948";
+        askAllQuestions();
+        
+    }
+    else if(questionset=="delta")
+    {
+        console.log("Quiz complete");
+        delta_total = total;
+        finalAnswer();
+    
+    }
     
 }
 
 
+function finalAnswer()
+{
+    
+    Rio = Q_total*delta_total;
+    
+    document.getElementById("Qbox").innerHTML = "Q="+Q_total;
+    document.getElementById("deltabox").innerHTML = "delta="+delta_total;
+    document.getElementById("Rbox").innerHTML = "Rio Score: "+Rio;
+    
+}
+
+function askAllQuestions()
+{
+    
+    
+    
+    if(questionset=="Q")
+    {
+        console.log("Asking Q Questions");
+    currentQuestions = Q_questions;
+    answers = Q_answers;
+    }
+    
+    else if(questionset=="delta")
+    {
+        console.log("Asking delta questions");
+        currentQuestions=delta_questions;
+        answers = delta_answers;
+    
+    }
+    
+    else if(questionsets.indexOf(questionset)<0)
+    {
+        console.log("Error - question set not found");
+        return;
+    }
+    
+    qID = 0;
+    nQ = currentQuestions.length;
+    askQuestion(currentQuestions);
+}
 
 
-askAllQuestions(Q_questions);
+
+questionset= "Q";
+askAllQuestions();
