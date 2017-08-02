@@ -23,8 +23,11 @@ var Q_questions = [{
 		   }];
 
 var answers = [0,0,0];
-var nQ = Q_questions.length;
+var nQ;
 var qID = 0;
+
+var currentQuestions;
+
 
 function clearBox(elementID)
     {
@@ -74,7 +77,7 @@ function askTextBox(question){
 function askQuestion()
 {
 
-    question = Q_questions[qID];
+    question = currentQuestions[qID];
     // Clear previous question
     clearBox("answersbox");
 
@@ -97,7 +100,9 @@ function askQuestion()
 function getQuestionAnswer()
 {
     
-    currentQuestion = Q_questions[qID];
+    currentQuestion = currentQuestions[qID];
+    nchoices = currentQuestion.choices.length;
+    
     console.log("getting question answer");
     qtype = currentQuestion.qtype;
     choice = -1;
@@ -106,7 +111,7 @@ function getQuestionAnswer()
     // If question multichoice, then obtain which radio button was ticked
     if(qtype=="multichoice")
     {
-	for (i=0; i < currentQuestion.choices.length; i++)
+	for (i=0; i < nchoices; i++)
 	{
         console.log(qID, i,currentQuestion.choices.length);
 	    var ischecked = document.getElementsByName("choice"+String(i+1))[0].checked;	
@@ -114,44 +119,61 @@ function getQuestionAnswer()
 	    if(ischecked) choice = i;
 	}
 
-        
 	answers[qID] = currentQuestion.values[choice];
     }
     
     else if(qtype=="textbox")
     {
-        answers[qID] = document.getElementsByName("box")[0].value;// Get value of textbox
+        answers[qID] = parseFloat(document.getElementsByName("box")[0].value);// Get value of textbox
     }
     
 
 
     console.log("Answer is "+answers[qID]);
     
-    // Update the question ID and ask the next question... TODO
+    // Update the question ID and ask the next question
     qID++;
     
     if(qID <nQ)
     {
-        askQuestion();
+        askQuestion(currentQuestions);
         
-    // Unless we have run out of questions...
+    // Unless we have run out of questions
     }
     
     else
     {
-        
+        console.log("We have asked all the questions");
+        calculateTotal();
         
     }
  
 }
 
+function calculateTotal()
+
+{
+    var total = 0;
+    
+    for (i=0; i<answers.length; i++)
+    {
+        console.log(i, total,answers[i]);
+        total = total+answers[i];
+        
+    }
+    console.log("Total is ",total);
+}
+
 function askAllQQuestions()
 {
     qID = 0;
-    askQuestion();
-
+    currentQuestions = Q_questions;
+    nQ = currentQuestions.length;
+    askQuestion(currentQuestions);
     
 }
+
+
 
 
 askAllQQuestions();
