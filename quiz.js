@@ -11,26 +11,34 @@ var questionsets = ["Q", "A", "B","C"]
 
 
 var Q_questions = [{
-                   text:"What is the distance to the signal?",
-                   choices: ["in the solar system",
-                             "less than a light year",
-                             "less than 100 light years",
-                             "further than 100 light years"],
-                   values: [4, 3, 2, 1],
-                   skipvalue: [4],
+                   text:"What is the light travel time to the signal?",
+                   choices: ["less than a day (i.e. in the Solar System)",
+                             "days to years (i.e. about as close as the nearest star)",
+                             "years to decades (in the solar neighbourhood)",
+                             "Centuries to millennia (good fraction of the galactic radius)",
+                             "unknown"],
+                   values: [4, 3, 2, 1,0],
                    qtype:"multichoice"},
                    
                    {
-                   text: "Have They seen us?",
-                   choices: ["yes", "no"],
-                   values: [2,1],
+                   text: "What are the prospects for communication with the source of the signal?",
+                   choices: ["We are in active two way communication",
+                             "We could respond using the same medium/encoding as the signal in the near future",
+                             "We can understand the signal or we have artifacts we can study",
+                             "No communication is taking place"],
+                   values: [4,3,2,1],
                    qtype:"multichoice"
                    },
                    {
-                   text: "How large is it?",
+                   text: "Is the sender aware of humanity and its technology?",
+                   choices:["Yes, certainly—the signal is intended for us, specifically",
+                            "Possibly, but there is little or no evidence for this",
+                            "Almost certainly not (e.g. they are too far away)",
+                            "Senders are apparently extinct"],
+                   values:[2,1,0,-1],
                    minimum: 0,
                    maximum:100,
-                   qtype:"textbox"
+                   qtype:"multichoice"
 		   }];
 
 
@@ -322,14 +330,14 @@ function finalAnswer()
     // J only non-zero if not a hoax (C>0)
     if(C_total > 1.0e-10) J = A_total + B_total +C_total - 20.0;
     
-    var delta = Math.pow(10, (J-10.0)/2.0);
+    var delta = Math.pow(10.0, (J-10.0)/2.0);
     
-    Rio = Q_total*delta_total;
+    Rio = Q_total*delta;
     
     document.getElementById("Qbox").innerHTML = "Q = "+Q_total;
     document.getElementById("Abox").innerHTML = "A= "+A_total+", B = "+B_total+", C = "+C_total;
     document.getElementById("Jbox").innerHTML = "J = "+J;
-    document.getElementById("deltabox").innerHTML = "&#948 = "+delta_total;
+    document.getElementById("deltabox").innerHTML = "&#948 = "+delta;
     document.getElementById("Rbox").innerHTML = "Rio Score: R = "+Rio;
     
 
