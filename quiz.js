@@ -86,7 +86,7 @@ function askMultiChoice(question){
 	var choiceLabel = document.createElement('label');
 	choiceLabel.setAttribute('name', 'label'+String(i+1));
 	var choiceRadioButton = document.createElement('input');
-	var choiceString = 'choice'+String(i+1);
+	var choiceString = 'multichoice';
 
 	choiceRadioButton.setAttribute('type', 'radio');
 	choiceRadioButton.setAttribute('name', choiceString);
@@ -156,10 +156,12 @@ function getQuestionAnswer()
     // If question multichoice, then obtain which radio button was ticked
     if(qtype=="multichoice")
     {
+        
+        var buttonList = document.getElementsByName("multichoice");
 	for (i=0; i < nchoices; i++)
 	{
         
-	    var ischecked = document.getElementsByName("choice"+String(i+1))[0].checked;
+        var ischecked = buttonList[i].checked;
 	    if(ischecked) choice = i;
 	}
 
@@ -265,6 +267,14 @@ function calculateTotal()
     else if(questionset=="C")
     {
         console.log("Quiz complete");
+        
+        document.getElementById("ask").innerHTML = "";
+        document.getElementById("submitbutton").style.visibility = "hidden";
+        document.getElementById("confirm").innerHTML = "";
+        document.getElementById("quizname").innerHTML = "Quiz complete";
+        document.getElementById("answersbox").innerHTML = "";
+        document.getElementById("quizsub").innerHTML = "";
+        
         delta_total = total;
         finalAnswer();
     
@@ -285,10 +295,11 @@ function finalAnswer()
     
     Rio = Q_total*delta_total;
     
-    document.getElementById("Qbox").innerHTML = "Q="+Q_total;
-    document.getElementById("Jbox").innerHTML = "J="+J;
-    document.getElementById("deltabox").innerHTML = "delta="+delta_total;
-    document.getElementById("Rbox").innerHTML = "Rio Score: "+Rio;
+    document.getElementById("Qbox").innerHTML = "Q = "+Q_total;
+    document.getElementById("Abox").innerHTML = "A= "+A_total+", B = "+B_total, ", C = "+C_total;
+    document.getElementById("Jbox").innerHTML = "J = "+J;
+    document.getElementById("deltabox").innerHTML = "delta = "+delta_total;
+    document.getElementById("Rbox").innerHTML = "Rio Score: R = "+Rio;
     
 }
 

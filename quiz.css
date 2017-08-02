@@ -2,18 +2,12 @@ body {
 
 }
 
-h1{
+h1,h2,h3{
     color: navy;
     margin-left: 20px;
     font-family: helvetica, sans-serif;
 }
 
-h2,h3
-{
-    color:navy;
-    margin-left:30px;
-    font-family: helvetica, sans-serif
-}
 
 p {
     color:gray;
@@ -23,5 +17,10 @@ p {
 div
 {
     color:black;
+    margin-left:30px;
     font-family: helvetica, sans-serif;
+}
+
+button{
+    margin-left:20px;
 }
