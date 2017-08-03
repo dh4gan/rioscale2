@@ -2,9 +2,9 @@
 
 This repository hosts a website for calculating the Rio Scale 2.0, for categorising signals from Search for Extraterrestrial Intelligence (SETI) surveys.  The calculation of the scale is simply
 
-*$R = Q \delta$*
+*R = Q &#948;*
 
-Where *Q* measures the consequences of the signal (if true), and *&#948* describes the probability that the signal is indeed due to extraterrestrial intelligence.
+Where *Q* measures the consequences of the signal (if true), and *&#948;* describes the probability that the signal is indeed due to extraterrestrial intelligence.
 
 
 ## Website 
@@ -17,7 +17,7 @@ The website has been tested on Chrome, Firefox and Safari (no promises about Int
 
 ## Python scripts
 
-This repository also includes the quiz in Python format.  These scripts are principally used to compute statistics of the quiz, but can also be used
+This repository also includes the quiz in Python format.  These scripts are principally used to compute statistics of the quiz, but can also be used as a command-line calculator if wished.
 
 ### Installation and use
 
