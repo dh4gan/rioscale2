@@ -279,6 +279,7 @@ function getQuestionAnswer(){
     {
         nchoices = currentQuestion.choices.length;
         var buttonList = document.getElementsByName("multichoice");
+        choice = -10;
 	for (i=0; i < nchoices; i++)
 	{
         
@@ -286,6 +287,11 @@ function getQuestionAnswer(){
 	    if(ischecked) choice = i;
 	}
 
+        if(choice==-10)
+        {
+            document.getElementById("confirm").innerHTML = "Please select an option before continuing"
+            return;
+        }
 	answers[qID] = currentQuestion.values[choice];
     }
     
