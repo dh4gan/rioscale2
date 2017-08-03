@@ -2,7 +2,7 @@
 
 This repository hosts a website for calculating the Rio Scale 2.0, for categorising signals from Search for Extraterrestrial Intelligence (SETI) surveys.  The calculation of the scale is simply
 
-*R = Q * &#948*
+*$R = Q \delta$*
 
 Where *Q* measures the consequences of the signal (if true), and *&#948* describes the probability that the signal is indeed due to extraterrestrial intelligence.
 
