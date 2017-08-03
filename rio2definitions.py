@@ -56,110 +56,65 @@ def ask_yesno_question(Q_old,question,options,answer=None,text=True):
    
     return Q
 
-def ask_nature_question(Q_old, inputanswer=None,text=True):
-    
-    question = "What is the nature of the signal? (select one of the 7 options) \n\n"
-    
-    question = question+"------------------------\n"
-    question = question+"Manufactured Artifact:\n"
-    question = question+"------------------------\n"
-    question = question+"(1) Small Probe / Pieces of Alien Technology\n"
-    question = question+"(2) Spacecraft capable of carrying macroscopic organisms\n"
-    question = question+"(3) Megastructure\n"
-    question = question+"------------------------\n"
-    question = question+"Transmission: \n"
-    question = question+"------------------------\n"
-    question = question+"(4) Electromagnetic (radio, visible or other form of light)\n"
-    question = question+"(5) Neutrino or other high energy particle\n"
-    question = question+"(6) Gravitational Waves\n"
-    
-    question = question+"------------------------\n"
-    question = question+"Close Encounter \n"
-    question = question+"------------------------\n"
-    question = question+"(7) Physical Encounter with alien(s)\n"
-      
-    options = {
-        1: 1, # Small probe / pieces of alien tech
-        2: 2, # Larger spacecraft
-        3: 3, # Megastructure
-        4: 1, # EM transmission
-        5: 2, # Neutrino transmission
-        6: 3,  # GW transmission
-        7: 4, # Physical encounter
-    }
-    
-    return ask_question(Q_old,question,options,answer=inputanswer,text=text)
-
-
-
-
-def ask_content_question(Q_old,inputanswer=None,text=True):
-
-    question = "Does the signal contain clear evidence of an encoded message or data? (y/n)"
-    
-    options = {
-        "y": 1,
-        "Y": 1, 
-        "n": 0, 
-        "N": 0, 
-    }
-      
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
-    
-def ask_direction_question(Q_old,inputanswer=None,text=True):
-
-    question = "Has the origin of the signal been accurately located (either on the sky, or nearby)? (y/n)"
-    
-    options = {
-        "y": 1,
-        "Y": 1, 
-        "n": 0, 
-        "N": 0, 
-    }
-      
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
-       
-def ask_distance_question(Q_old, inputanswer=None,text=True):
-    
-    question = "Has the distance to the signal been accurately determined? (y/n)"
-    
-    options = {
-        "y": 1,
-        "Y": 1, 
-        "n": 0, 
-        "N": 0, 
-    }
-      
-    return ask_yesno_question(Q_old,question,options,answer=inputanswer,text=text)
-           
-
 def ask_where_question(Q_old,inputanswer=None,text=True):
 
-    question = "What is the estimated distance to the signal?\n"
-    question = question+"(1) Within the Solar System \n"
-    question = question+"(2) Within the Galaxy \n"
-    question = question+"(3) Beyond the Galaxy \n"
-    question = question+"(4) Unknown\n"
+    question = "What is the estimated light travel time to the signal?\n"
+    question = question+"(1) Less than a day (i.e. within the Solar System) \n"
+    question = question+"(2) days to years (i.e. about as close as the nearest star) \n"
+    question = question+"(3) years to decades (in the solar neighbourhood) \n"
+    question = question+"(4) Centuries to millennia (in the Galaxy)"
+    question = question+"(4) Longer/Unknown\n"
     
     options = {
-                1:3, # Within the Solar System
-                2:2, # Within the Galaxy
-                3:1, # Outside the Galaxy
-                4:0, #unknown
+                1:4, # Within the Solar System
+                2:3, # nearest star
+                3:2, # solar neighborhood
+                4:1, # in the Galaxy 
+                5:0, #unknown
     }
    
     return ask_question(Q_old,question,options,answer=inputanswer,text=text)
     
+def ask_comm_question(Q_old,inputanswer=None,text=True):
+    question = "What are the prospects for communication with the signal?"
+    question = question+"(1) We are in active two way communication \n"
+    question = question+"(2) We could respond using the same medium/encoding as the signal within 20 years: \n"
+    question = question+"(3) We can understand the signal or we have artifacts we can study \n"
+    question = question+"(4) No communication is taking place \n"
     
-def ask_all_Q_questions(text=True,natureanswer=None,directanswer=None,contentanswer=None,distanceanswer=None,whereanswer=None):
+    options = {
+                1:4, # Two way
+                2:3, # could respond
+                3:2, # can understand
+                4:0, # no communication
+    }
+   
+    return ask_question(Q_old,question,options,answer=inputanswer,text=text)
+    
+def ask_aware_question(Q_old,inputanswer=None,text=True):
+    question = "Is the sender aware of humanity and its technology?"
+    question = question+"(1) Yes, certainly - the signal is intended for us, specifically: \n"
+    question = question+"(2) Possibly, but there is little or no evidence for this: \n"
+    question = question+"(3) Almost certainly not (e.g. they are too far away):  \n"
+    question = question+"(4) Senders are apparently extinct \n"
+    
+    options = {
+                1:2, # Two way
+                2:1, # could respond
+                3:0, # can understand
+                4:-1, # no communication
+    }
+   
+    return ask_question(Q_old,question,options,answer=inputanswer,text=text)
+    
+
+def ask_all_Q_questions(text=True,whereanswer=None,commanswer=None,awareanswer=None):
     
     Q=0
     
-    Q=ask_nature_question(Q, inputanswer=natureanswer,text=text)
-    Q=ask_content_question(Q, inputanswer=contentanswer,text=text)
-    Q=ask_direction_question(Q, inputanswer=directanswer,text=text)
-    Q=ask_distance_question(Q, inputanswer=distanceanswer,text=text)
-    Q=ask_where_question(Q, inputanswer=whereanswer,text=text)
+    Q = ask_where_question(Q,inputanswer=whereanswer,text=text)
+    Q = ask_comm_question(Q,inputanswer=commanswer,text=text)
+    Q = ask_aware_question(Q,inputanswer=awareanswer,text=text)
 
     return Q
 

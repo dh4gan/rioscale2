@@ -5,6 +5,8 @@
 import rio2definitions as d
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.stats import norm
+import matplotlib.mlab as mlab
 
 title = '\t\t\t RIO SCALE 2.0 Distribution \n\t\t\t -------------------------'
 
@@ -15,22 +17,17 @@ print '-------------------------'
 
 Qvalues = []
 
-natureanswers = [1,2,3,4,5,6,7]
-directanswers = ["y","n"]
-contentanswers = ["y","n"]
-distanceanswers = ["y","n"]
-whereanswers = [1,2,3,4]
+whereanswers = [1,2,3,4,5]
+commanswers = [1,2,3,4]
+awareanswers = [1,2,3,4]
 
 
-for nat in natureanswers:
-    for content in contentanswers:
-            for direc in directanswers:
-                for dist in distanceanswers:
-                    for wh in whereanswers:
+for w in whereanswers:
+    for c in commanswers:
+        for a in awareanswers:
 
-                        Q =d.ask_all_Q_questions(text=False,natureanswer=nat,contentanswer=content,directanswer=direc,distanceanswer=dist, whereanswer=wh)
-
-                        Qvalues.append(Q)
+            Q =d.ask_all_Q_questions(text=False,whereanswer=w,commanswer=c,awareanswer=a)
+            Qvalues.append(Q)
 
 print 'Computing all possible values of delta'
 print '-------------------------'
@@ -44,7 +41,6 @@ deltavalues = []
 certaintyanswers=personanswers=instrumentanswers=hoaxanswers=["y","n"] 
 amenableanswers=buildersanswers=[0,1,2,3]
 communityanswers = range(10)
-print communityanswers
 
 for cert in certaintyanswers:
     for am in amenableanswers:
