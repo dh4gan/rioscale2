@@ -1,6 +1,10 @@
-// For now, these are placeholders for the three question types
-// (multiple choice, y/n, textbox)
+/* Javascript to run the Rio 2.0 Questionnaire
+* Written by dh4gan (01-Aug-2017)
+*
+*/
 
+
+// Variables to hold the question data //
 var questionset;
 var currentQuestions;
 var answers;
@@ -10,6 +14,7 @@ var qID;
 var questionsets = ["Q", "A", "B","C"]
 
 
+// Q question variables
 var Q_questions = [{
                    text:"What is the light travel time to the signal?",
                    choices: ["less than a day (i.e. in the Solar System)",
@@ -45,6 +50,11 @@ var Q_questions = [{
 var Q_answers = [0,0,0];
 var Q_total = 0.0;
 
+
+// delta question variables
+
+// A first
+
 var A_questions = [{
                    text: "Is there significant uncertainty about whether the phenomenon occurred/occurs at all?",
                    choices: ["yes","no"],
@@ -67,6 +77,8 @@ var A_answers = [0,0,0];
 var A_total = 0.0;
 
 
+// Now B
+
 var B_questions = [{
                    text:"Does the phenomenon look like a known instrumental or psychological effect?",
                    choices:["yes", "no"],
@@ -85,6 +97,8 @@ var B_answers = [0,0];
 var B_total = 0.0;
 
 
+// Finally C
+
 var C_questions = [{
                    text:"Is there good reason to think the phenomenon is a hoax?",
                    choices:["yes","no"],
@@ -101,13 +115,106 @@ var C_questions = [{
 var C_answers = Q_answers;
 var C_total = 0.0;
 
+// Function that drives the quiz
 
-function clearBox(elementID)
-    {
-     document.getElementById(elementID).innerHTML = "";
+
+startQuiz();
+
+
+
+
+
+
+/*
+ *
+ * Function definitions
+ *
+ */
+
+
+function startQuiz() {
+    /*
+     * Begins the quiz
+     */
+    
+    questionset= "Q";
+    askQuestionSet();
+}
+
+
+function askQuestionSet() {
+    /*
+     * Decides which question set is next, and asks the first question
+     */
+    console.log("Asking all " +questionset+ " questions");
+    
+    
+    
+    switch(questionset){
+            
+        case "Q":
+            currentQuestions = Q_questions;
+            answers = Q_answers;
+            break;
+            
+        case "A":
+            currentQuestions = A_questions;
+            answers = A_answers;
+            break;
+            
+        case "B":
+            currentQuestions = B_questions;
+            answers = B_answers;
+            break;
+            
+        case "C":
+            currentQuestions = C_questions;
+            answers = C_answers;
+            break;
+        default:
+            document.getElementById("confirm").innerHTML = "Error: question set not found";
+            return;
     }
     
+    qID = 0;
+    nQ = currentQuestions.length;
+    askQuestion(currentQuestions);
+}
+
+
+
+
+
+function askQuestion() {
+    /*
+     * Asks a question - decides which type to ask
+     */
+    
+    question = currentQuestions[qID];
+    // Clear previous question
+    clearBox("answersbox");
+    
+    // Set new question text
+    document.getElementById("ask").innerHTML = question.text;
+    
+    // Get either radio buttons for multiple choice or text box
+    if (question.qtype=='multichoice')
+    {
+        askMultiChoice(question);
+    }
+    
+    else if (question.qtype =='textbox')
+    {
+        askTextBox(question);
+    }
+    
+}
+
+    
 function askMultiChoice(question){
+    /*
+     * sets up a multiple choice question
+     */
     
     // Create radio buttons for possible choices
     for (i=0; i< question.choices.length; i++){
@@ -127,12 +234,12 @@ function askMultiChoice(question){
 	
 	document.getElementById("answersbox").appendChild(choiceLabel);
     }
-
-    
-    
 }
 
 function askTextBox(question){
+    /*
+     * Sets up a question with a text box for answering
+     */
 
     // Create text box for answer
     var choiceLabel = document.createElement('label')
@@ -145,34 +252,17 @@ function askTextBox(question){
     textBox.setAttribute('value', 0);
 		
     document.getElementById("answersbox").appendChild(textBox);
-    }
-
-
-function askQuestion()
-{
-
-    question = currentQuestions[qID];
-    // Clear previous question
-    clearBox("answersbox");
-
-    // Set new question text
-    document.getElementById("ask").innerHTML = question.text;
-
-    // Get either radio buttons for multiple choice or text box 
-    if (question.qtype=='multichoice')
-    {
-	askMultiChoice(question);
-    }
-
-    else if (question.qtype =='textbox')
-    {
-	askTextBox(question);
-    }
-
 }
 
-function getQuestionAnswer()
-{
+
+
+
+function getQuestionAnswer(){
+    /*
+     * Interrogates page for question answer
+     * Either sets up next question
+     * Or calculates total from this question set
+     */
     
     document.getElementById("confirm").innerHTML = "";
     currentQuestion = currentQuestions[qID];
@@ -224,23 +314,28 @@ function getQuestionAnswer()
 
 
     console.log("Answer is "+answers[qID]);
-    
+
+    // Check to see if answer demands we skip the rest of the question set
     if(answers[qID]==currentQuestion.skipvalue)
     {
-    
+    // If we're skipping
         document.getElementById("confirm").innerHTML = "Previous answer resulted in skipping questions";
         qID =nQ;
     }
     else
     {
-    // Update the question ID and ask the next question
+        
+    // If not, update the question ID
     qID++;
     }
+    
+    
+    // If we haven't run out of questions, ask the next one
     if(qID <nQ)
     {
         askQuestion(currentQuestions);
         
-    // Unless we have run out of questions
+    // Otherwise, calculate the total from this section and move on
     }
     
     else
@@ -252,9 +347,13 @@ function getQuestionAnswer()
  
 }
 
-function calculateTotal()
-
-{
+function calculateTotal(){
+    /*
+     * Calculates the total from this question set
+     * Asks the next set of questions
+     */
+    
+    
     var total = 0;
     
     for (i=0; i<answers.length; i++)
@@ -272,7 +371,7 @@ function calculateTotal()
         // Update header to show new question set
         
         document.getElementById("quizname").innerHTML = "Questions to determine &#948";
-        document.getElementById("quizsub").innerHTML = "A) How real and amenable to study is the phenomenon?";
+        document.getElementById("quizsub").innerHTML = "Section A) How real and amenable to study is the phenomenon?";
         askQuestionSet();
         
     }
@@ -283,7 +382,9 @@ function calculateTotal()
         questionset="B";
         A_total = total;
         
-        document.getElementById("quizsub").innerHTML = "B) How certain are we that the phenomenon is not instrumental?";
+        // Update header to show new question set
+
+        document.getElementById("quizsub").innerHTML = "Section B) How certain are we that the phenomenon is not instrumental?";
         
         askQuestionSet();
         
@@ -295,23 +396,31 @@ function calculateTotal()
     questionset="C";
     B_total = total;
     
-    document.getElementById("quizsub").innerHTML = "C) How certain are we that the phenomenon is not natural or anthropogenic?";
+        // Update header to show new question set
+
+    document.getElementById("quizsub").innerHTML = "Section C) How certain are we that the phenomenon is not natural or anthropogenic?";
     
     askQuestionSet();
     }
     
     else if(questionset=="C")
     {
+        // If this is the end of the quiz, delete quiz elements and calculate final scores
+
         console.log("Quiz complete");
         
-        document.getElementById("ask").innerHTML = "";
-        document.getElementById("submitbutton").style.visibility = "hidden";
-        document.getElementById("confirm").innerHTML = "";
-        document.getElementById("quizname").innerHTML = "Quiz complete";
-        document.getElementById("answersbox").innerHTML = "";
-        document.getElementById("quizsub").innerHTML = "";
+        clearBox("ask");
+        clearBox("confirm");
+        clearBox("answersbox");
+        clearBox("quizsub");
         
-        delta_total = total;
+        //document.getElementById("ask").innerHTML = "";
+        document.getElementById("submitbutton").style.visibility = "hidden";
+        //document.getElementById("confirm").innerHTML = "";
+        document.getElementById("quizname").innerHTML = "Quiz complete";
+        //document.getElementById("answersbox").innerHTML = "";
+        //document.getElementById("quizsub").innerHTML = "";
+        
         finalAnswer();
     
     }
@@ -319,8 +428,11 @@ function calculateTotal()
 }
 
 
-function finalAnswer()
-{
+function finalAnswer(){
+    /*
+     * Returns the final Rio score
+     */
+    
     
     console.log("A="+A_total);
     console.log("B="+B_total);
@@ -332,62 +444,19 @@ function finalAnswer()
     
     var delta = Math.pow(10.0, (J-10.0)/2.0);
     
-    Rio = Q_total*delta;
+    var Rio = Q_total*delta;
     
     document.getElementById("Qbox").innerHTML = "Q = "+Q_total;
     document.getElementById("Abox").innerHTML = "A= "+A_total+", B = "+B_total+", C = "+C_total;
     document.getElementById("Jbox").innerHTML = "J = "+J;
-    document.getElementById("deltabox").innerHTML = "&#948 = "+delta;
-    document.getElementById("Rbox").innerHTML = "Rio Score: R = "+Rio;
+    document.getElementById("deltabox").innerHTML = "&#948 = "+delta.toPrecision(2);
+    document.getElementById("Rbox").innerHTML = "Rio Score: R = Q x &#948 =  "+Rio.toPrecision(2);
     
 
     document.getElementById("refreshbutton").style.visibility="visible";
-    
 }
 
-function askQuestionSet()
-{
-    console.log("Asking all " +questionset+ " questions");
-    
-    
-    
-    switch(questionset){
-    
-    case "Q":
-            currentQuestions = Q_questions;
-            answers = Q_answers;
-            break;
-            
-    case "A":
-            currentQuestions = A_questions;
-            answers = A_answers;
-            break;
-            
-    case "B":
-            currentQuestions = B_questions;
-            answers = B_answers;
-            break;
-            
-    case "C":
-            currentQuestions = C_questions;
-            answers = C_answers;
-            break;
-        default:
-            document.getElementById("confirm").innerHTML = "Error: question set not found";
-            return;
-    }
-    
-    qID = 0;
-    nQ = currentQuestions.length;
-    askQuestion(currentQuestions);
+function clearBox(elementID)
+{ // Simple helper function to empty HTML elements
+    document.getElementById(elementID).innerHTML = "";
 }
-
-
-function startQuiz()
-{
-    //document.getElementById("refreshbutton").style.visibility="hidden";
-    questionset= "Q";
-    askQuestionSet();
-}
-
-startQuiz();
