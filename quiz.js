@@ -41,8 +41,6 @@ var Q_questions = [{
                             "Almost certainly not (e.g. they are too far away)",
                             "Senders are apparently extinct"],
                    values:[2,1,0,-1],
-                   minimum: 0,
-                   maximum:100,
                    qtype:"multichoice"
 		   }];
 
@@ -62,7 +60,7 @@ var A_questions = [{
                    skipvalue:[0],
                    qtype:"multichoice"},
                    {
-                   text:"How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
+                   text:"How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br><br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
                    minimum:0,
                    maximum:3,
                    qtype:"textbox"
@@ -87,7 +85,7 @@ var B_questions = [{
                    qtype:"multichoice"
                    },
                    {
-                   text:"What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
+                   text:"What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
                    minimum:0,
                    maximum:3,
                    qtype:"textbox"
@@ -107,21 +105,19 @@ var C_questions = [{
                    qtype:"multichoice"
                    },
                    {
-                   text: "How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon?<br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
-                   choices:[0,9],
+                   text: "How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
+                   minimum:0,
+                   maximum:9,
                    qtype:"textbox"
                    }]
 
-var C_answers = Q_answers;
+var C_answers = [0,0];
 var C_total = 0.0;
 
 // Function that drives the quiz
 
 
 startQuiz();
-
-
-
 
 
 
@@ -386,7 +382,7 @@ function calculateTotal(){
     {
         console.log("A questions answered");
         questionset="B";
-        A_total = total;
+        A_total = total+6.0;
         
         // Update header to show new question set
 
@@ -411,6 +407,7 @@ function calculateTotal(){
     
     else if(questionset=="C")
     {
+        C_total = total;
         // If this is the end of the quiz, delete quiz elements and calculate final scores
 
         console.log("Quiz complete");
