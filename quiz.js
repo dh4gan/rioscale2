@@ -21,7 +21,7 @@ var Q_questions = [{
                              "days to years (i.e. about as close as the nearest star)",
                              "years to decades (in the solar neighbourhood)",
                              "Centuries to millennia (good fraction of the galactic radius)",
-                             "unknown"],
+                             "Longer/unknown"],
                    values: [4, 3, 2, 1,0],
                    qtype:"multichoice"},
                    
