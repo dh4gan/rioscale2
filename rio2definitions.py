@@ -116,6 +116,7 @@ def ask_all_Q_questions(text=True,whereanswer=None,commanswer=None,awareanswer=N
     Q = ask_comm_question(Q,inputanswer=commanswer,text=text)
     Q = ask_aware_question(Q,inputanswer=awareanswer,text=text)
 
+    if Q<0.0: Q=0
     return Q
 
 ######################################

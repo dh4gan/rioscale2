@@ -427,6 +427,10 @@ function calculateTotal(){
 	    console.log("Q questions answered");
 	    questionset = "A";
 	    Q_total = total;
+        if(Q_total < 0.0)
+        {
+            Q_total = 0.0;
+        }
 	    
 	    // Update header to show new question set
 	    
