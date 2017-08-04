@@ -555,8 +555,6 @@ function finalAnswer(){
     document.getElementById("answersbox").innerHTML = "";
     document.getElementById("ask").innerHTML = "";
     document.getElementById("quizsub").innerHTML = "";
-    document.getElementById("quizname").innerHTML = "";
-    
     
     document.getElementById("resultheader").style.visibility = "visible";
     document.getElementById("Qbox").innerHTML = "(Q = "+Q_total+"): <b>If signal is from extraterrestrial intelligence</b>...<br>"+Q_explainer;
