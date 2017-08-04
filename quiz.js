@@ -78,7 +78,7 @@ var A_questions = [{
                    values: [0,1],
                    skipvalue:[0],
                    qtype:"multichoice",
-		   explainertext:"Examples of significant uncertainty: reports of sighting of a UFO or aliens, interpretation of ancient art, telescopic data from amateurs, interpreting other people’s data with little or no documentation or metadata"
+		   explainertext:"Examples of significant uncertainty: <br>reports of sighting of a UFO or aliens, <br>interpretation of ancient art, <br>telescopic data from amateurs, <br>interpreting other people’s data with little or no documentation or metadata"
     },
                    {
                    text:"A2) How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br><br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
@@ -106,7 +106,7 @@ var B_questions = [{
                    values:[0,7],
                    skipvalue:[0],
                    qtype:"multichoice",
-		   explainertext:"Examples of known instrumental effects: DC channel in a filterbank file, cosmic rays in spectra, lens flare in photograph, other known sources of noise / bad data<br><br>Examples of known psychological effects: Reports of alien abduction, UFO sightings; subjective, qualitative interpretations of apparent correlations in noisy data."
+		   explainertext:"Examples of known instrumental effects:<br> DC channel in a filterbank file, cosmic rays in spectra, lens flare in photograph, other known sources of noise / bad data<br><br>Examples of known psychological effects: Reports of alien abduction, UFO sightings; subjective, qualitative interpretations of apparent correlations in noisy data."
                    },
                    {
                    text:"B2) What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
@@ -135,54 +135,13 @@ var C_questions = [{
                    minimum:0,
                    maximum:9,
                    qtype:"textbox",
-		   explainertext:"(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same)"
+		   explainertext:""
                    }];
-var A_answers = [0,0,0];
-var A_total = 0.0;
-
-
-// Now B
-
-var B_questions = [{
-                   text:"B1) Does the phenomenon look like a known instrumental or psychological effect?",
-                   choices:["yes", "no"],
-                   values:[0,7],
-                   skipvalue:[0],
-                   qtype:"multichoice",
-		   explainertext:"Examples of known instrumental effects: DC channel in a filterbank file, cosmic rays in spectra, lens flare in photograph, other known sources of noise / bad data<br><br>Examples of known psychological effects: Reports of alien abduction, UFO sightings; subjective, qualitative interpretations of apparent correlations in noisy data."
-                   },
-                   {
-                   text:"B2) What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
-                   minimum:0,
-                   maximum:3,
-                   qtype:"textbox",
-		   explainertext:""
-                   }]
-
-var B_answers = [0,0];
-var B_total = 0.0;
-
-
-// Finally C
-
-var C_questions = [{
-                   text:"C1) Is there good reason to think the phenomenon is a hoax?",
-                   choices:["yes","no"],
-                   values:[0,1],
-                   skipvalue:[0],
-                   qtype:"multichoice",
-		   explainertext:"",
-                   },
-                   {
-                   text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
-                   minimum:0,
-                   maximum:9,
-                   qtype:"textbox",
-		   explainertext:"Examples of natural/anthropogenic explanations: terrestrial radio frequency interference for radio observations, terrestrial laser communications for laser SETI, experimental aircraft for well-documented UFO sightings."
-                   }]
-
 var C_answers = [0,0];
 var C_total = 0.0;
+
+
+
 
 // Dictionary for J
 
@@ -199,6 +158,22 @@ var J_dictionary = {
     9: "Significant mainstream press interest warranted, heavy coverage by technical popular press. Broad agreement that the signal could be due to aliens",
     10: "Aliens. Front page of every major newspaper."
 }
+
+
+var R_dictionary = {
+    10: "Extraordinary",
+    9:  "Outstanding",
+    8:  "Far-reaching",
+    7:  "High",
+    6:  "Noteworthy",
+    5:  "Intermediate",
+    4:  "Moderate",
+    3:  "Minor",
+    2:  "Low",
+    1:  "Insignificant",
+    0:  "Nil"
+}
+
 
 // Function that drives the quiz
 
@@ -534,9 +509,9 @@ function finalAnswer(){
     
     var delta = Math.pow(10.0, (J-10.0)/2.0);
     
-    var prob_A = Math.pow(10.0, (A_total-10.0)/2.0);
-    var prob_B = Math.pow(10.0, (B_total-10.0)/2.0);
-    var prob_C = Math.pow(10.0, (C_total-10.0)/2.0);
+    var prob_A = 100.0*Math.pow(10.0, (A_total-10.0)/2.0);
+    var prob_B = 100.0*Math.pow(10.0, (B_total-10.0)/2.0);
+    var prob_C = 100.0* Math.pow(10.0, (C_total-10.0)/2.0);
     
     var Rio = Q_total*delta;
     
@@ -545,59 +520,20 @@ function finalAnswer(){
     var Q_explainer = Q_dictionary[Math.round(Q_total)];
     var J_explainer = J_dictionary[Math.round(J)];
 
-    var A_explainer = "Rough chance phenomenon is real: ";
-    var B_explainer = "Rough chance phenomenon is not instrumental/pyschological:  ";
-    var C_explainer = "Rough chance phenomenon is not natural/anthropogenic:  ";
+    var A_explainer = "Chance phenomenon is real is "+getChance(prob_A);
+    var B_explainer = "Chance phenomenon is not instrumental/psychological is "+getChance(prob_B);
+    var C_explainer = "Chance phenomenon is not natural/anthropogenic is "+getChance(prob_C);
+    var R_explainer = R_dictionary[Math.round(Rio)]
 
-    if(prob_A>0.0)
-	{
-	    A_explainer = A_explainer + "1 in "+Math.round(1.0/prob_A);
-	}
-    else
-	{
-	    A_explainer = A_explainer + "zero";
-	}
-
-    if(prob_B>0.0)
-	{
-	    B_explainer = B_explainer + "1 in "+Math.round(1.0/prob_B);
-	}
-    else
-	{
-	    B_explainer = B_explainer + "zero";
-	}
-    if(prob_C>0.0)
-	{
-	    C_explainer = C_explainer + "1 in "+Math.round(1.0/prob_C);
-	}
-    else
-	{
-	    C_explainer = C_explainer + "zero";
-	}
-
-
-    /*if(Q_total<=3){
-	Q_explainer = Q_dictionary[3];
-    }
-    else if(Q_total <=5){
-	Q_explainer = Q_dictionary[5];
-    }
-    else if(Q_total<=7){
-	Q_explainer = Q_dictionary[7];
-    }
-    else if(Q_total<=9){
-	Q_explainer = Q_dictionary[9];
-	}*/
-
-
-    document.getElementById("Qbox").innerHTML = "(Q = "+Q_total+"): <b>If signal is from extraterrestrial intelligence</b>..."+Q_explainer;
-    document.getElementById("Abox").innerHTML = "(A= "+A_total+"): "+A_explainer;
-    document.getElementById("Bbox").innerHTML = "(B= "+B_total+"): "+B_explainer;
-    document.getElementById("Cbox").innerHTML = "(C= "+C_total+"): "+C_explainer;
+  
+    document.getElementById("Qbox").innerHTML = "(Q = "+Q_total+"): <b>If signal is from extraterrestrial intelligence</b>...<br>"+Q_explainer;
+    document.getElementById("Abox").innerHTML = "(A = "+A_total+"): "+A_explainer;
+    document.getElementById("Bbox").innerHTML = "(B = "+B_total+"): "+B_explainer;
+    document.getElementById("Cbox").innerHTML = "(C = "+C_total+"): "+C_explainer;
     //, B = "+B_total+", C = "+C_total;
     document.getElementById("Jbox").innerHTML = "(J = "+J+"): "+J_explainer;
     document.getElementById("deltabox").innerHTML = "&#948 = "+delta.toPrecision(1);
-    document.getElementById("Rbox").innerHTML = "Rio Score: R = Q x &#948 =  "+Rio.toPrecision(1);
+    document.getElementById("Rbox").innerHTML = "Rio Score: R = Q x &#948 =  "+Math.round(Rio,3)+"<br>Rating: "+R_explainer;
     
     
     document.getElementById("refreshbutton").style.visibility="visible";
@@ -607,4 +543,32 @@ function clearBox(elementID)
 { 
     // Simple helper function to empty HTML elements
     document.getElementById(elementID).innerHTML = "";
+}
+
+function getChance(prob)
+{
+    var chance = "";
+	if (prob<=10.0)
+	    {
+		chance = "very low";
+	    }
+	
+	else if (prob>10.0 && prob<=30.0)
+	    {
+		chance = "low";
+	    }
+	else if (prob>30.0 && prob<=50.0)
+	    {
+		chance = "moderate";
+	    }
+	else if (prob>50.0 && prob<=70.0)
+	    {
+	    chance = "high";
+	    }
+	else
+	    {
+	    chance =  "very high";
+	    }
+
+    return chance;
 }
