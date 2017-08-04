@@ -18,18 +18,21 @@
     <div id="answersbox"> </div>
     <br>
     
-    <div>
+    <div id="buttonarray">
     <button id="submitbutton" onclick="getQuestionAnswer(qID)"> Submit </button>
     <button id="refreshbutton" onclick="window.location.reload()">Restart Quiz</button>
     </div>
     
     <p id="confirm"> </p>
     
+    <div id = "spaces">
     <br>
     <br>
+    </div>
 
     <p id="explainbox"> </p>
 
+    <h2 id="resultheader" style="visibility:hidden"> Results </h2>
     <div id="Qbox"> </div>
     <br>
     
@@ -42,6 +45,13 @@
     
     <br>
     <div id="Rbox"> </div>
+    
+    <h2> Answer Log </h2>
+        
+    <div id="logbox"></div>
+    
+    <button id = "printbutton" onclick=window.print() style="visibility:hidden">Print Results</button>
+    <button id= "refreshlower" onclick="window.location.reload()" style="visibility:hidden">Restart Quiz</button>
     
    
     

@@ -1,6 +1,6 @@
 /* Javascript to run the Rio 2.0 Questionnaire
 * Written by dh4gan (01-Aug-2017)
-*
+* Runs the quiz, and records all answers along with Q, J, delta and R
 */
 
 
@@ -17,9 +17,9 @@ var questionsets = ["Q", "A", "B","C"]
 // Q question variables
 var Q_questions = [{
                    text:"Q1) What is the light travel time to the signal?",
-                   choices: ["less than a day (i.e. in the Solar System)",
-                             "days to years (i.e. about as close as the nearest star)",
-                             "years to decades (in the solar neighbourhood)",
+                   choices: ["Less than a day (i.e. in the Solar System)",
+                             "Days to years (i.e. about as close as the nearest star)",
+                             "Years to decades (in the solar neighbourhood)",
                              "Centuries to millennia (good fraction of the galactic radius)",
                              "Longer/unknown"],
                    values: [4, 3, 2, 1,0],
@@ -81,7 +81,7 @@ var A_questions = [{
 		   explainertext:"Examples of significant uncertainty: <br>reports of sighting of a UFO or aliens, <br>interpretation of ancient art, <br>telescopic data from amateurs, <br>interpreting other people’s data with little or no documentation or metadata"
     },
                    {
-                   text:"A2) How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br><br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
+                   text:"A2) How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br><br>&nbsp0: The phenomenon has been observed exactly once, <br>&nbsp1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>&nbsp2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>&nbsp3: The phenomenon is observed routinely by different groups using different equipment.",
                    minimum:0,
                    maximum:3,
                    qtype:"textbox",
@@ -109,7 +109,7 @@ var B_questions = [{
 		   explainertext:"Examples of known instrumental effects:<br> DC channel in a filterbank file, cosmic rays in spectra, lens flare in photograph, other known sources of noise / bad data<br><br>Examples of known psychological effects: Reports of alien abduction, UFO sightings; subjective, qualitative interpretations of apparent correlations in noisy data."
                    },
                    {
-                   text:"B2) What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
+                   text:"B2) What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>&nbsp0: These experts have not weighed in at all<br>&nbsp1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>&nbsp2: These experts give a 50% chance that it is instrumental<br>&nbsp3: These experts give a less than 10% chance that it is instrumental",
                    minimum:0,
                    maximum:3,
                    qtype:"textbox",
@@ -131,7 +131,7 @@ var C_questions = [{
 		   explainertext:"",
                    },
                    {
-                   text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
+                   text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>&nbsp0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>&nbsp1 point: It is consistent with a common phenomenon<br>&nbsp3 points: It is consistent only with rare or poorly-understood phenomena<br>&nbsp6 points: It is not consistent with any known natural or anthropogenic phenomena<br>&nbsp8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>&nbsp9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
                    minimum:0,
                    maximum:9,
                    qtype:"textbox",
@@ -341,6 +341,8 @@ function getQuestionAnswer(){
 		    if(ischecked) choice = i;
 		}
 	    
+        updateLog(choice,qtype);
+        
 	    if(choice==-10)
 		{
 		    document.getElementById("confirm").innerHTML = "Please select an option before continuing"
@@ -368,6 +370,8 @@ function getQuestionAnswer(){
 			    return;
 			}
 		}
+        
+        updateLog(answers[qID],qtype);
 	    
 	}
     
@@ -406,6 +410,26 @@ function getQuestionAnswer(){
 	}
     
 }
+
+function updateLog(choice,qtype){
+    
+    /*
+     * Updates the answer log with the selected answer and its value
+     */
+    
+    var qtext = currentQuestion.text.split("<br>")[0];
+    
+    if (qtype=="multichoice")
+    {
+        
+        document.getElementById("logbox").innerHTML = document.getElementById("logbox").innerHTML + qtext+"&nbsp &nbsp"+currentQuestion.choices[choice]+"  ("+currentQuestion.values[choice]+")<br><br>" ;
+    }
+    else if(qtype="textbox")
+    {
+        document.getElementById("logbox").innerHTML = document.getElementById("logbox").innerHTML + qtext+"&nbsp &nbsp("+choice+")<br><br>";
+    }
+}
+
 
 function calculateTotal(){
     /*
@@ -480,12 +504,8 @@ function calculateTotal(){
 	    clearBox("quizsub");
 	    clearBox("explainbox");
 	    
-	    //document.getElementById("ask").innerHTML = "";
 	    document.getElementById("submitbutton").style.visibility = "hidden";
-	    //document.getElementById("confirm").innerHTML = "";
-	    document.getElementById("quizname").innerHTML = "Quiz complete";
-	    //document.getElementById("answersbox").innerHTML = "";
-	    //document.getElementById("quizsub").innerHTML = "";
+	    document.getElementById("quizname").innerHTML = "Quiz complete ("+Date()+")";
 	    
 	    finalAnswer();
 	    
@@ -529,18 +549,31 @@ function finalAnswer(){
     var C_explainer = "Chance phenomenon is not natural/anthropogenic is "+getChance(prob_C);
     var R_explainer = R_dictionary[Math.round(Rio)]
 
-  
+    
+    document.getElementById("spaces").innerHTML = "";
+    document.getElementById("buttonarray").innerHTML = "";
+    document.getElementById("answersbox").innerHTML = "";
+    document.getElementById("ask").innerHTML = "";
+    document.getElementById("quizsub").innerHTML = "";
+    document.getElementById("quizname").innerHTML = "";
+    
+    
+    document.getElementById("resultheader").style.visibility = "visible";
     document.getElementById("Qbox").innerHTML = "(Q = "+Q_total+"): <b>If signal is from extraterrestrial intelligence</b>...<br>"+Q_explainer;
     document.getElementById("Abox").innerHTML = "(A = "+A_total+"): "+A_explainer;
     document.getElementById("Bbox").innerHTML = "(B = "+B_total+"): "+B_explainer;
     document.getElementById("Cbox").innerHTML = "(C = "+C_total+"): "+C_explainer;
-    //, B = "+B_total+", C = "+C_total;
     document.getElementById("Jbox").innerHTML = "(J = "+J+"): "+J_explainer;
     document.getElementById("deltabox").innerHTML = "&#948 = "+delta.toPrecision(1);
     document.getElementById("Rbox").innerHTML = "Rio Score: R = Q x &#948 =  "+Math.round(Rio,3)+"<br>Rating: "+R_explainer;
     
     
-    document.getElementById("refreshbutton").style.visibility="visible";
+    // Show buttons to print results, refresh quiz
+    
+    document.getElementById("printbutton").style.visibility="visible";
+    document.getElementById("refreshlower").style.visibility="visible";
+    
+    
 }
 
 function clearBox(elementID)
