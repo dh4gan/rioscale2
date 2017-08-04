@@ -23,7 +23,9 @@ var Q_questions = [{
                              "Centuries to millennia (good fraction of the galactic radius)",
                              "Longer/unknown"],
                    values: [4, 3, 2, 1,0],
-                   qtype:"multichoice"},
+                   qtype:"multichoice",
+		   explainertext:""
+    },
                    
                    {
                    text: "Q2) What are the prospects for communication with the source of the signal?",
@@ -32,7 +34,8 @@ var Q_questions = [{
                              "We can understand the signal or we have artifacts we can study",
                              "No communication is taking place"],
                    values: [4,3,2,1],
-                   qtype:"multichoice"
+                   qtype:"multichoice",
+		   explainertext:""
                    },
                    {
                    text: "Q3) Is the sender aware of humanity and its technology?",
@@ -41,7 +44,8 @@ var Q_questions = [{
                             "Almost certainly not (e.g. they are too far away)",
                             "Senders are apparently extinct"],
                    values:[2,1,0,-1],
-                   qtype:"multichoice"
+                   qtype:"multichoice",
+		   explainertext:""
 		   }];
 
 
@@ -58,18 +62,22 @@ var A_questions = [{
                    choices: ["yes","no"],
                    values: [0,1],
                    skipvalue:[0],
-                   qtype:"multichoice"},
+                   qtype:"multichoice",
+		   explainertext:""
+    },
                    {
                    text:"A2) How amenable to study is the phenomenon? Award up to 3 points based on the repeatability of the phenomenon. <br><br>0: The phenomenon has been observed exactly once, <br>1: The phenomenon has been observed a small but plural number times, either as multiple targets showing similar phenomena, or a single target showing multiple similar events. <br>2: The phenomenon has been been confirmed to be real and repeated, for instance by multiple groups using a single instrument to observe the phenomenon or by an additional observation with a different instrument or from a different site. <br>3: The phenomenon is observed routinely by different groups using different equipment.",
                    minimum:0,
                    maximum:3,
-                   qtype:"textbox"
+                   qtype:"textbox",
+		   explainertext:""
                    },
                    {
-                   text:"A3) Is the discoverer of phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence? <br><br>(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same).",
+                   text:"A3) Is the discoverer of phenomenon the same person/group that predicted that such a phenomenon would indicate the presence of alien intelligence?",
                    choices:["yes, the claimants predicted this 'discovery'","no, the claimants have identified a new phenomenon, or one predicted by others"],
                    values:[-1,0],
                    qtype:"multichoice",
+		   explainertext:"(People are natural wishful thinkers, and often see what they want to see, so it gives extra credibility to a claim if the groups doing the prediction and those doing the discovery are not the same)"
                    }];
 var A_answers = [0,0,0];
 var A_total = 0.0;
@@ -82,13 +90,15 @@ var B_questions = [{
                    choices:["yes", "no"],
                    values:[0,7],
                    skipvalue:[0],
-                   qtype:"multichoice"
+                   qtype:"multichoice",
+		   explainertext:"Examples of known instrumental effects: DC channel in a filterbank file, cosmic rays in spectra, lens flare in photograph, other known sources of noise / bad data<br><br>Examples of known psychological effects: Reports of alien abduction, UFO sightings; subjective, qualitative interpretations of apparent correlations in noisy data."
                    },
                    {
                    text:"B2) What chances do the instrument builders / experts in the method / observers of the phenomenon give that the signal is not instrumental? Award between 0-3 points:<br><br>0: These experts have not weighed in at all<br>1: These experts give roughly 90% chance that it is instrumental (i.e. 10% chance it is real)<br>2: These experts give a 50% chance that it is instrumental<br>3: These experts give a less than 10% chance that it is instrumental",
                    minimum:0,
                    maximum:3,
-                   qtype:"textbox"
+                   qtype:"textbox",
+		   explainertext:""
                    }]
 
 var B_answers = [0,0];
@@ -102,13 +112,15 @@ var C_questions = [{
                    choices:["yes","no"],
                    values:[0,1],
                    skipvalue:[0],
-                   qtype:"multichoice"
+                   qtype:"multichoice",
+		   explainertext:"",
                    },
                    {
                    text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>1 point: It is consistent with a common phenomenon<br>3 points: It is consistent only with rare or poorly-understood phenomena<br>6 points: It is not consistent with any known natural or anthropogenic phenomena<br>8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
                    minimum:0,
                    maximum:9,
-                   qtype:"textbox"
+                   qtype:"textbox",
+		   explainertext:""
                    }]
 
 var C_answers = [0,0];
@@ -200,6 +212,8 @@ function askQuestion() {
 	{
 	    askTextBox(question);
 	}
+
+    document.getElementById("explainbox").innerHTML = question.explainertext;
     
 }
 
