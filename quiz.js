@@ -75,8 +75,8 @@ Q_dictionary[8] = Q_dictionary[9];
 var A_questions = [{
                    text: "A1) Is there significant uncertainty about whether the phenomenon occurred/occurs at all?",
                    choices: ["yes","no"],
-                   values: [0,1],
-                   skipvalue:[0],
+                   values: [6,7],
+                   skipvalue:[6],
                    qtype:"multichoice",
 		   explainertext:"Examples of significant uncertainty: <br>reports of sighting of a UFO or aliens, <br>interpretation of ancient art, <br>telescopic data from amateurs, <br>interpreting other people’s data with little or no documentation or metadata"
     },
@@ -468,7 +468,7 @@ function calculateTotal(){
 	{
 	    console.log("A questions answered");
 	    questionset="B";
-	    A_total = total+6.0;
+	    A_total = total;
 	    
 	    // Update header to show new question set
 	    
@@ -583,20 +583,20 @@ function clearBox(elementID)
 function getChance(prob)
 {
     var chance = "";
-	if (prob<=10.0)
+	if (prob<10.0)
 	    {
 		chance = "very low";
 	    }
 	
-	else if (prob>10.0 && prob<=30.0)
+	else if (prob>=10.0 && prob<30.0)
 	    {
 		chance = "low";
 	    }
-	else if (prob>30.0 && prob<=50.0)
+	else if (prob>=30.0 && prob<50.0)
 	    {
 		chance = "moderate";
 	    }
-	else if (prob>50.0 && prob<=70.0)
+	else if (prob>=50.0 && prob<70.0)
 	    {
 	    chance = "high";
 	    }
