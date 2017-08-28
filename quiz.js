@@ -435,11 +435,25 @@ function goBack()
     
     // Remove previous line from the answer log
 
+    // Split log text by carriage returns
     var logtext = document.getElementById("logbox").innerHTML;
+    var loglines = logtext.split('<br><br>');
 
-    if(logtext.lastIndexOf("\n")>0) {
-	logtext = logtext.substring(0,x.lastIndexOF("\n"));
-	document.getElementById("logbox").innerHTML = logtext;
+    // Find index of line to delete and delete it
+    var delIndex = loglines.length-2;
+    
+    loglines[delIndex] = "";
+
+
+    // Rewrite the log
+    document.getElementById("logbox").innerHTML = "";
+
+    for (i=0; i<loglines.length; i++)
+    {
+	if(loglines[i]!="")
+	{
+	    document.getElementById("logbox").innerHTML = document.getElementById("logbox").innerHTML + loglines[i] + "<br><br>";
+	}
     }
 
     // Ask this question
