@@ -397,7 +397,7 @@ function getQuestionAnswer(){
     // If we haven't run out of questions, ask the next one
     if(qID <nQ)
 	{
-	    askQuestion(currentQuestions);
+	    askQuestion();
 	    
 	    // Otherwise, calculate the total from this section and move on
 	}
@@ -410,6 +410,43 @@ function getQuestionAnswer(){
 	}
     
 }
+
+
+function goBack()
+{
+    /*
+     * Goes back a question
+     */
+
+
+    // Don't go back if we're at the first question
+
+    if (qID==0){
+	return;
+    }
+    
+    // Set question ID back one
+
+    qID--;
+
+    // Delete current answer value
+    answers[qID]=0.0;
+
+    
+    // Remove previous line from the answer log
+
+    var logtext = document.getElementById("logbox").innerHTML;
+
+    if(logtext.lastIndexOf("\n")>0) {
+	logtext = logtext.substring(0,x.lastIndexOF("\n"));
+	document.getElementById("logbox").innerHTML = logtext;
+    }
+
+    // Ask this question
+    askQuestion(qID);
+
+}
+
 
 function updateLog(choice,qtype){
     
