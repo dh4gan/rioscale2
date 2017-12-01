@@ -16,11 +16,11 @@ var questionsets = ["Q", "A", "B","C"]
 
 // Q question variables
 var Q_questions = [{
-                   text:"Q1) What is the light travel time to the signal?",
-                   choices: ["Less than a day (i.e. in the Solar System)",
-                             "Days to years (i.e. about as close as the nearest star)",
-                             "Years to decades (in the solar neighbourhood)",
-                             "Centuries to millennia (good fraction of the galactic radius)",
+                   text:"Q1) What is the estimated distance to the signal?",
+                   choices: ["Less than a light-day (i.e. in the Solar System)",
+                             "Light-days to light-years (i.e. about as close as the nearest star)",
+                             "light-years to tens of light-years",
+                             "Hundreds to thousands of light-years to millennia (in the Galaxy)",
                              "Longer/unknown"],
                    values: [4, 3, 2, 1,0],
                    qtype:"multichoice",
@@ -131,11 +131,11 @@ var C_questions = [{
 		   explainertext:"",
                    },
                    {
-                   text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>&nbsp0 points: A wide range of experts of the relevant natural or anthropogenic phenomena has not been consulted<br>&nbsp1 point: It is consistent with a common phenomenon<br>&nbsp3 points: It is consistent only with rare or poorly-understood phenomena<br>&nbsp6 points: It is not consistent with any known natural or anthropogenic phenomena<br>&nbsp8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>&nbsp9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
+                   text: "C2) How does a wide community of experts assess the probability that there any known sources of natural or anthropogenic signal that could explain the phenomenon? Award between 0-9 points<br><br>&nbsp0 points: A wide range of experts agree that the signal is clearly natural/anthropogenic, or said experts have not been consulted<br>&nbsp1 point: It is consistent with a common phenomenon<br>&nbsp3 points: It is consistent only with rare or poorly-understood phenomena<br>&nbsp6 points: It is not consistent with any known natural or anthropogenic phenomena<br>&nbsp8 points: Only extraterrestrial, artificial explanations make sense (all natural and anthropogenic explanations have been ruled out).<br>&nbsp9 points: The phenomenon contains information content of clearly intelligent design (i.e. it contains a message; or is an obviously artificial and alien artifact available for close (perhaps robotic) inspection).",
                    minimum:0,
                    maximum:9,
                    qtype:"textbox",
-		   explainertext:""
+		   explainertext:"(Examples of anthropogenic signals: terrestrial radio frequency interference (RFI), terrestrial laser communications, experimental aircraft for well-documented UFO sightings)"
                    }];
 var C_answers = [0,0];
 var C_total = 0.0;
